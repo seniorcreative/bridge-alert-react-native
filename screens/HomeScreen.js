@@ -16,12 +16,6 @@ import { Button } from 'react-native-elements';
 import { WebBrowser } from 'expo';
 
 import Colors from '../constants/Colors';
-// import Layout from '../constants/Layout';
-// import Slider from 'react-native-image-slider';
-// import Swiper from 'react-native-swiper';
-// import Carousel from 'react-native-snap-carousel';
-// import ImageSlider from 'react-native-image-slider';
-
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
@@ -36,12 +30,6 @@ const itemHorizontalMargin = wp(2);
 
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
-
-const entryBorderRadius = 8;
-
-
-
-import { MonoText } from '../components/StyledText';
 
 
 export default class HomeScreen extends React.Component {
@@ -172,8 +160,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fc0',
-    justifyContent: 'space-between'
+    backgroundColor: '#fc0'
   },
   developmentModeText: {
     marginBottom: 20,
@@ -197,66 +184,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
     // marginLeft: -10,
   },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#2c2c2c',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
   image: {
     // ...StyleSheet.absoluteFillObject,
     // resizeMode: 'cover',
@@ -266,46 +193,4 @@ const styles = StyleSheet.create({
     width: viewportWidth,
     flex: 1
   },
-  // image's border radius is buggy on ios; let's hack it!
-  radiusMask: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: entryBorderRadius,
-    backgroundColor: 'white'
-  },
-  radiusMaskEven: {
-    backgroundColor: Colors.black
-  },
-  textContainer: {
-    justifyContent: 'center',
-    paddingTop: 20 - entryBorderRadius,
-    paddingBottom: 20,
-    paddingHorizontal: 16,
-    backgroundColor: 'white',
-    borderBottomLeftRadius: entryBorderRadius,
-    borderBottomRightRadius: entryBorderRadius
-  },
-  textContainerEven: {
-    backgroundColor: Colors.black
-  },
-  title: {
-    color: Colors.black,
-    fontSize: 13,
-    fontWeight: 'bold',
-    letterSpacing: 0.5
-  },
-  titleEven: {
-    color: 'white'
-  },
-  subtitle: {
-    marginTop: 6,
-    color: Colors.gray,
-    fontSize: 12,
-    fontStyle: 'italic'
-  },
-  subtitleEven: {
-    color: 'rgba(255, 255, 255, 0.7)'
-  }
-});
+})
