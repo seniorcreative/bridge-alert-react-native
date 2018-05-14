@@ -1,8 +1,15 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Image, Dimensions } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
+import { Provider} from 'react-redux';
+import { createStore } from 'redux';
+import reducers from './reducers';
+//
+import SharedHeader from './components/SharedHeader';
+
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 export default class App extends React.Component {
   state = {
@@ -20,21 +27,26 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-          <RootNavigation />
-        </View>
+        <Provider store={createStore(reducers)}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
+            <View>
+                <SharedHeader style={styles.WelcomeImage} />
+            </View>
+            <RootNavigation />
+          </View>
+        </Provider>
       );
     }
   }
 
   _loadResourcesAsync = async () => {
     return Promise.all([
-      Asset.loadAsync([
-        require('./assets/images/robot-dev.png'),
-        require('./assets/images/robot-prod.png'),
-      ]),
+      // Asset.loadAsync([
+      //   require('./assets/images/robot-dev.png'),
+      //   require('./assets/images/robot-prod.png'),
+      // ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
         ...Ionicons.font,
@@ -61,8 +73,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fc0',
   },
-  statusBarUnderlay: {
-    height: 24,
-    backgroundColor: 'rgba(0,0,0,0.2)',
-  },
+  // statusBarUnderlay: {
+    // height: 25,
+    // backgroundColor: 'rgba(0,0,0,0.2)',
+  // }
 });

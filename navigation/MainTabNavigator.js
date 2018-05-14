@@ -55,11 +55,11 @@ export default TabNavigator(
             color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
           />
         );
-      },
+      }
     }),
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
-    animationEnabled: false,
+    animationEnabled: true,
     swipeEnabled: false,
     tabBarOptions: {
       labelStyle: {
@@ -68,7 +68,7 @@ export default TabNavigator(
       activeTintColor: '#fc0',
       inactiveTintColor: '#ddd',
       style: {
-        backgroundColor: '#2c2c2c'
+        backgroundColor: '#2c2c2c',
       }
     }
   }
