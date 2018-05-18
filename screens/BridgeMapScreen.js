@@ -103,7 +103,13 @@ class BridgeMapScreen extends React.Component {
 
   checkDistanceFromBridges = (start) => {
 
-    this.props.Bridges.VIC.map((marker, index) => {
+    // const auState = this.props.AustralianState
+    // const { state } = this.props.navigation;
+    // const currentRouteKey = state.routes[state.index].key;
+    // console.log("loc check ", this.props)
+    console.log(this.props.Bridges, this.props.AustralianState);
+    if (!this.props.Bridges[this.props.AustralianState]) return;
+    this.props.Bridges[this.props.AustralianState].map((marker, index) => {
         const end = {
           latitude: marker[3],
           longitude: marker[4]
@@ -117,7 +123,7 @@ class BridgeMapScreen extends React.Component {
           // Check if we are near to a bridge.
           if (+marker[5] < BRIDGE_WARNING_DISTANCE && marker[6] === false) {
           
-          let stateProp = this.state.VIC[index]
+          let stateProp = this.props.Bridges[auState][index]
           stateProp[6] = true
           this.setState({stateProp})
           this.setState({mapWarning: true})
@@ -130,11 +136,12 @@ class BridgeMapScreen extends React.Component {
             ios: {
               sound: true,
               vibrate: true
-            },
-            android: {
-              sound: true,
-              vibrate: true
             }
+            // },
+            // android: {
+            //   sound: true,
+            //   vibrate: true
+            // }
           } //, ios: {sound: true, vibrate: true}, android: {sound: true, vibrate: true}}
 
           let t = new Date().getTime() + 5000;
@@ -142,14 +149,8 @@ class BridgeMapScreen extends React.Component {
             time: t // (date or number) — A Date object representing when to fire the notification or a number in Unix epoch time. Example: (new Date()).getTime() + 1000 is one second from now.
           };
 
-          // let locationNotificationId = Expo.Notifications.presentLocalNotificationAsync(localNotification)
-
           Expo.Notifications.addListener(this.notificationHandler)
-
           let locationNotificationId = Expo.Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions);
-          // console.log('your notification id', locationNotificationId)
-          // this.state.alerts.push(locationNotificationId)
-          // console.log("Alerts", this.state.alerts)
         }
       }
     )
@@ -203,6 +204,7 @@ class BridgeMapScreen extends React.Component {
 
     const currentLatitude = this.state.latitude
     const currentLongitude = this.state.longitude
+    // const auState = this.props.AustralianState
 
     return (
     <View style={styles.container}>
@@ -221,7 +223,7 @@ class BridgeMapScreen extends React.Component {
           followUserLocation={true}
           onLayout={this.onMapLayout}
         >
-          {this.state.isMapReady && this.props.Bridges.VIC.map(marker => (
+          {this.state.isMapReady && this.props.Bridges[this.props.AustralianState].map(marker => (
             <MapView.Marker
               key={marker[0]}
               coordinate={{latitude: marker[3], longitude: marker[4]}}
@@ -231,13 +233,13 @@ class BridgeMapScreen extends React.Component {
               // image={require('../assets/images/Assets.xcassets/AddPin.imageset/Pathwayz-Icon-256.png')}
             />
           ))}
-          <MapView.Polyline coordinates={this.state.coords} strokeWidth={2} strokeColor="red" />
+          {/* <MapView.Polyline coordinates={this.state.coords} strokeWidth={2} strokeColor="red" /> */}
 
         </MapView>
         }
         {this.state.mapWarning &&
         <View>
-          <Text >Metres To {this.state.mapWarningMessage}</Text>
+          <Text>{this.state.mapWarningMessage}</Text>
           <Button rounded title="ok" onPress={() => this.clearWarning()} color={'#fff'} backgroundColor={'#f00'}></Button>
         </View>
         }
@@ -253,8 +255,11 @@ class BridgeMapScreen extends React.Component {
 const mapStateToProps = state => {
   // console.log("mapStateToProps on bridge map screen", state, state.Bridges)
   return {Bridges: state.Bridges,
-  VehicleHeight: state.VehicleHeight}
-};
+  VehicleHeight: state.VehicleHeight,
+  AustralianState: state.AustralianState,
+  Route: state.Route,
+  Screen: state.Screen}
+}
 
 export default connect(mapStateToProps)(BridgeMapScreen);
 

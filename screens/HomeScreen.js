@@ -108,11 +108,26 @@ class HomeScreen extends React.Component {
 
   }
 
+  _startJourney () {
+\    this.props.navigation.navigate('BridgeMap')
+  }
+
+  _pickState ( auState ) {
+    this.props.setAustralianState( auState )
+  }
+
   render() {
     return (
       <View style={styles.container}>
           <View style={styles.welcomeContainer}>
+            <Text>Select a state</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Button small rounded title="NSW" onPress={this._pickState('NSW')}></Button>
+              <Button small rounded title="QLD" onPress={this._pickState('QLD')}></Button>
+              <Button small rounded title="VIC" onPress={this._pickState('VIC')}></Button>
+            </View>
             <Text style={{marginTop: 0, fontSize: 24}}>Swipe to select vehicle</Text>
+            <Text style={{alignSelf: 'center', color: Colors.red, fontSize: 28, fontWeight: 'bold'}}>{this.state.currentItemName}</Text>
             <View style={{width: viewportWidth}}>
               <FlatList
                 data={this.props.Vehicles}
@@ -130,7 +145,10 @@ class HomeScreen extends React.Component {
               <Text style={{fontSize: 20}}>{this.props.VehicleHeight/10.0}{'m'}</Text>
               <Button medium rounded title=" + " onPress={this._onHeightUp} fontSize={30} color={'#000'} backgroundColor={'#fff'}></Button>
             </View>
-            <Text style={{alignSelf: 'center', color: Colors.red, fontSize: 28}}>{this.state.currentItemName}</Text>
+            <Button onPress={() => this._startJourney()} medium rounded title="Start" style={{alignSelf: 'center', marginTop: 12, width: '66%'}} color={'#fff'} backgroundColor={'#f00'}></Button>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Routes')}>
+              <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Plan My Journey</Text>
+            </TouchableOpacity>
           </View>
       </View>
     );
@@ -171,10 +189,13 @@ class HomeScreen extends React.Component {
 }
 
 const mapStateToProps = state => {
-    // console.log("mapStateToProps on home screen", state, state.Vehicles)
+    console.log("mapStateToProps on home screen", state, state.AustralianState)
     return {
       Vehicles: state.Vehicles,
-      VehicleHeight: state.VehicleHeight
+      VehicleHeight: state.VehicleHeight,
+      AustralianState: state.AustralianState,
+      Route: state.Route,
+      Screen: state.Screen
     }
 };
 
