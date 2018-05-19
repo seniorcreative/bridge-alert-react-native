@@ -76,7 +76,6 @@ export default class HomeScreen extends React.Component {
       currentHeight: this.state.vehicleImages[pageNum].height,
       currentItemHeight: this.state.vehicleImages[pageNum].height
     })
-    console.log('scrolled to page ', pageNum, this.state.page);
   }
 
   _onHeightDn () {
