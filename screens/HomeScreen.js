@@ -109,11 +109,13 @@ class HomeScreen extends React.Component {
   }
 
   _startJourney () {
-\    this.props.navigation.navigate('BridgeMap')
+    this.props.navigation.navigate('BridgeMap')
   }
 
   _pickState ( auState ) {
+    console.log("pick state", auState )
     this.props.setAustralianState( auState )
+  
   }
 
   render() {
@@ -122,9 +124,9 @@ class HomeScreen extends React.Component {
           <View style={styles.welcomeContainer}>
             <Text>Select a state</Text>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Button small rounded title="NSW" onPress={this._pickState('NSW')}></Button>
-              <Button small rounded title="QLD" onPress={this._pickState('QLD')}></Button>
-              <Button small rounded title="VIC" onPress={this._pickState('VIC')}></Button>
+              <Button small rounded title="NSW" onPress={() => this._pickState('NSW')}></Button>
+              <Button small rounded title="QLD" onPress={() => this._pickState('QLD')}></Button>
+              <Button small rounded title="VIC" onPress={() => this._pickState('VIC')}></Button>
             </View>
             <Text style={{marginTop: 0, fontSize: 24}}>Swipe to select vehicle</Text>
             <Text style={{alignSelf: 'center', color: Colors.red, fontSize: 28, fontWeight: 'bold'}}>{this.state.currentItemName}</Text>

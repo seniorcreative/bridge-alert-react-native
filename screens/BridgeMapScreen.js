@@ -107,7 +107,8 @@ class BridgeMapScreen extends React.Component {
     // const { state } = this.props.navigation;
     // const currentRouteKey = state.routes[state.index].key;
     // console.log("loc check ", this.props)
-    console.log(this.props.Bridges, this.props.AustralianState);
+    // console.log(this.props.Bridges, this.props.AustralianState);
+
     if (!this.props.Bridges[this.props.AustralianState]) return;
     this.props.Bridges[this.props.AustralianState].map((marker, index) => {
         const end = {
@@ -123,7 +124,7 @@ class BridgeMapScreen extends React.Component {
           // Check if we are near to a bridge.
           if (+marker[5] < BRIDGE_WARNING_DISTANCE && marker[6] === false) {
           
-          let stateProp = this.props.Bridges[auState][index]
+          let stateProp = this.props.Bridges[this.props.AustralianState][index]
           stateProp[6] = true
           this.setState({stateProp})
           this.setState({mapWarning: true})
@@ -209,6 +210,7 @@ class BridgeMapScreen extends React.Component {
     return (
     <View style={styles.container}>
       <View style={styles.welcomeContainer}>
+        <Text>{this.props.AustralianState}</Text>
         {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
         {currentLatitude && currentLongitude &&
         <MapView
