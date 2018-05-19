@@ -1,0 +1,38 @@
+[
+    {
+        "key": 1,
+        "source": "../assets/images/vehicles/vehicle-1.png",
+        "title": "Car",
+        "height": 25
+    },
+    {
+        "key": 2,
+        "source": "../assets/images/vehicles/vehicle-2.png",
+        "title": "Camper",
+        "height": 30
+    },
+    {
+        "key": 3,
+        "source": "../assets/images/vehicles/vehicle-3.png",
+        "title": "Coach",
+        "height": 32
+    },
+    {
+        "key": 4,
+        "source": "../assets/images/vehicles/vehicle-4.png",
+        "title": "Van",
+        "height": 33
+    },
+    {
+        "key": 5,
+        "source": "../assets/images/vehicles/vehicle-5.png",
+        "title": "Double-decker",
+        "height": 40
+    },
+    {
+        "key": 6,
+        "source": "../assets/images/vehicles/vehicle-6.png",
+        "title": "HGV",
+        "height": 37
+    }
+]

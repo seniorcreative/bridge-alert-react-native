@@ -46,10 +46,6 @@ export default class RouteScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <Image
-            source={require('../assets/images/bridge-alert-logo.png')}
-            style={styles.welcomeImage}
-          />
           <View style={{marginTop: 20, marginBottom: 20}}>
             <Text>Enter a start address</Text>
             <TextInput
@@ -92,13 +88,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 0,
     marginBottom: 20
-  },
-  welcomeImage: {
-    width: viewportWidth,
-    height: 90,
-    resizeMode: 'contain',
-    marginTop: 0,
-    // marginLeft: -10,
   },
   image: {
     width: viewportWidth,

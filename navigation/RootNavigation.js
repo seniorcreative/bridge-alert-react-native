@@ -8,15 +8,17 @@ import registerForPushNotificationsAsync from '../api/registerForPushNotificatio
 const RootStackNavigator = StackNavigator(
   {
     Main: {
-      screen: MainTabNavigator,
+      screen: MainTabNavigator
     },
   },
   {
     navigationOptions: () => ({
+      // title:'Bridge Alert',
       headerTitleStyle: {
         fontWeight: 'normal',
-      },
+      }
     }),
+    cardStyle: { shadowColor: 'transparent' }
   }
 );
 
