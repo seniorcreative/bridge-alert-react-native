@@ -87,11 +87,11 @@ class HomeScreen extends React.Component {
 
   _onHeightDn () {
     // this.setState({ currentHeight: parseFloat(this.state.currentHeight - 1) })
-    this.props.setVehicleHeight(parseFloat(this.props.VehicleHeight - 1))
+    this.props.setVehicleHeight(parseFloat(Math.max(20, this.props.VehicleHeight - 1)))
   }
   _onHeightUp () {
     // this.setState({ currentHeight: parseFloat(this.state.currentHeight + 1) })
-    this.props.setVehicleHeight(parseFloat(this.props.VehicleHeight + 1))
+    this.props.setVehicleHeight(parseFloat(Math.min(75,this.props.VehicleHeight + 1)))
   }
 
   _renderVehicle = ({item}) => {
@@ -122,26 +122,28 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
           <View style={styles.welcomeContainer}>
-            <Text>Select a state</Text>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Button small rounded title="NSW" onPress={() => this._pickState('NSW')}></Button>
-              <Button small rounded title="QLD" onPress={() => this._pickState('QLD')}></Button>
-              <Button small rounded title="VIC" onPress={() => this._pickState('VIC')}></Button>
+            <Text style={{marginTop: 10, height: 25}}>Choose a State</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 25}}>
+              <Button small rounded title="NSW" onPress={() => this._pickState('NSW')} backgroundColor={(this.props.AustralianState === 'NSW') ? '#333' : '#ccc'}></Button>
+              <Button small rounded title="QLD" onPress={() => this._pickState('QLD')} backgroundColor={(this.props.AustralianState === 'QLD') ? '#333' : '#ccc'}></Button>
+              <Button small rounded title="VIC" onPress={() => this._pickState('VIC')} backgroundColor={(this.props.AustralianState === 'VIC') ? '#333' : '#ccc'}></Button>
             </View>
-            <Text style={{marginTop: 0, fontSize: 24}}>Swipe to select vehicle</Text>
-            <Text style={{alignSelf: 'center', color: Colors.red, fontSize: 28, fontWeight: 'bold'}}>{this.state.currentItemName}</Text>
             <View style={{width: viewportWidth}}>
               <FlatList
                 data={this.props.Vehicles}
                 maxSwipeDistance={viewportWidth}
                 horizontal={true}
-                style={{padding: 0, width: viewportWidth, minHeight: 270}}
+                style={{padding: 0, width: viewportWidth, height: 250}}
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={false}
                 onMomentumScrollEnd={this._onScrollEnd}
                 renderItem={this._renderVehicle}
+                extraData={this.state}
               />
+              <Button rounded small title="&lt;" onPress={() => this.setState({selected: this.state.page-1})} style={{position: 'absolute', left: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
+              <Button rounded small title="&gt;" onPress={() => this.setState({selected: this.state.page+1})} style={{position: 'absolute', right: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
             </View>
+            <Text style={{alignSelf: 'center', color: Colors.red, fontSize: 28, fontWeight: 'bold'}}>{this.state.currentItemName}</Text>
             <View style={{width: viewportWidth * 0.75,  flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
               <Button medium rounded title=" - " onPress={this._onHeightDn} fontSize={30} color={'#000'} backgroundColor={'#fff'}></Button>
               <Text style={{fontSize: 20}}>{this.props.VehicleHeight/10.0}{'m'}</Text>

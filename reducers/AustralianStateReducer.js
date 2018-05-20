@@ -1,4 +1,4 @@
-export default (state = 'VIC', action) => {
+export default (state = 'QLD', action) => {
     switch(action.type) {
         case 'set_australian_state':
             return action.payload;

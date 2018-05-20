@@ -23,6 +23,7 @@ const RootStackNavigator = StackNavigator(
 );
 
 export default class RootNavigator extends React.Component {
+  
   componentDidMount() {
     this._notificationSubscription = this._registerForPushNotifications();
   }
@@ -32,7 +33,7 @@ export default class RootNavigator extends React.Component {
   }
 
   render() {
-    return <RootStackNavigator />;
+    return <RootStackNavigator onNavigationStateChange={(prevState, nextState) => {console.log('nav state changed', prevState, nextState)}} />
   }
 
   _registerForPushNotifications() {

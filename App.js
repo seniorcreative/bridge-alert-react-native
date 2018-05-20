@@ -34,7 +34,7 @@ export default class App extends React.Component {
             <View>
                 <SharedHeader style={styles.WelcomeImage} />
             </View>
-            <RootNavigation />
+            <RootNavigation persistenceKey={"NavigationState"} />
           </View>
         </Provider>
       );

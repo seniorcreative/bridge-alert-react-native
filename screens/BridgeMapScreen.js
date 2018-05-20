@@ -5,7 +5,8 @@ import {
   Text,
   View,
   Dimensions,
-  Button
+  Button,
+  TouchableOpacity
 } from 'react-native';
 import { Constants, Location, Permissions, Notifications } from 'expo';
 import MapView from 'react-native-maps';
@@ -166,6 +167,16 @@ class BridgeMapScreen extends React.Component {
     this.setState({mapWarning: false});
   }
 
+  handleCenter = () => {
+    // const { latitude, longitude, latitudeDelta, longitudeDelta } = this.state.location;
+    this.map.animateToRegion({
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+      latitudeDelta: 0.99,
+      longitudeDelta: 0.99
+    })
+  }
+
   _grantLocationPermission = async () => {
     // let { id } = await navigator.geolocation.
     // // let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -224,6 +235,7 @@ class BridgeMapScreen extends React.Component {
           showsUserLocation={true}
           followUserLocation={true}
           onLayout={this.onMapLayout}
+          ref={map => {this.map = map}}
         >
           {this.state.isMapReady && this.props.Bridges[this.props.AustralianState].map(marker => (
             <MapView.Marker
@@ -240,17 +252,20 @@ class BridgeMapScreen extends React.Component {
         </MapView>
         }
         {this.state.mapWarning &&
-        <View>
-          <Text>{this.state.mapWarningMessage}</Text>
-          <Button rounded title="ok" onPress={() => this.clearWarning()} color={'#fff'} backgroundColor={'#f00'}></Button>
-        </View>
+          <TouchableOpacity onPress={() => this.clearWarning()}>
+            <Image source={require('../assets/images/warning.png')} style={styles.warningImage}></Image>
+            <Text style={styles.warningMessage}>{this.state.mapWarningMessage}</Text>
+          </TouchableOpacity> 
         }
-        <View style={styles.bottomView}>
-          <Text style={styles.bottomViewText}>{this.props.VehicleHeight / 10}m</Text>
+        <View style={styles.heightTab}>
+          <Text style={styles.heightTabText}>{this.props.VehicleHeight / 10}m</Text>
         </View>
+        <TouchableOpacity onPress={() => this.handleCenter()} style={styles.iconCenter}>
+          <Image source={require('../assets/images/Assets.xcassets/icon-center.imageset/center-icon-75.png')} style={styles.iconCenterImage}></Image>
+        </TouchableOpacity>
       </View>
     </View>
-    );
+    )
   }
 }
 
@@ -268,12 +283,12 @@ export default connect(mapStateToProps)(BridgeMapScreen);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fc0'
+    backgroundColor: '#acacac'
   },
   mapStyle: {
     flex: 1,
     width,
-    height: height - 136,
+    height: height - 186,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -299,21 +314,49 @@ const styles = StyleSheet.create({
     width: viewportWidth,
     flex: 1
   },
-  bottomView: {
-    width: '20%', 
-    height: 38,
+  heightTab: {
+    width: 75, 
+    height: 55,
     backgroundColor: '#111111', 
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
     position: 'absolute',
-    top: height - 175,
+    top: height - 192,
     left: 10,
     borderRadius: 10
   },
-  bottomViewText: {
+  heightTabText: {
     textAlign: 'center',
     color: '#ffffff',
     fontSize: 16
+  },
+  warningImage: {
+      width: 150,
+      height: 150,
+      position: 'absolute',
+      zIndex: 2,
+      top: height - 380,
+      left: -75
+  },
+  warningMessage: {
+      position: 'absolute',
+      backgroundColor: '#acacac',
+      textAlign: 'center',
+      top: height - 188,
+      fontWeight: 'bold',
+      zIndex: 1,
+      fontSize: 14,
+      left: -90
+  },
+  iconCenter: {
+    position: 'absolute',
+    top: height - 176,
+    right: 8,
+    zIndex: 3,
+  },
+  iconCenterImage: {
+    width: 24,
+    height: 24
   }
 })
