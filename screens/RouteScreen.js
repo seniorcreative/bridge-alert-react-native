@@ -15,12 +15,15 @@ import {
 import Polyline from '@mapbox/polyline'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 
 // start (532 barrabool rd)
 // -38.1707008,144.2724222
 
 // end - moriac somewhere
 // -38.2646152,144.1676303
+
+const PLACES_KEY = 'AIzaSyA2MxBrJqIfIs4DxCh65_bwkxk1Ic0QXRU'
 
 import { Button } from 'react-native-elements'
 import Colors from '../constants/Colors'
@@ -47,10 +50,8 @@ class RouteScreen extends React.Component {
   }
 
   async getDirections(startLoc, destinationLoc) {
-    console.log('getDirections', startLoc, destinationLoc)
     const { navigate } = this.props.navigation;
     try {
-      console.log('trying')
       let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${ startLoc }&destination=${ destinationLoc }`)
       let respJson = await resp.json();
       let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
@@ -60,7 +61,6 @@ class RouteScreen extends React.Component {
           longitude : point[1]
         }
       })
-      console.log('got coords', coords)
       this.props.setCoords(coords) // Save coords in redux state object
       navigate('BridgeMap')
       // return coords
@@ -73,26 +73,122 @@ class RouteScreen extends React.Component {
   showRouteOnMap () {
     // This func needs to take the autocomplete start and end lat and long
     // from the two inputs.
-    this.getDirections('-38.1707008,144.2724222','-38.2646152,144.1676303')
+    this.getDirections(`${this.state.startLocation.lat},${this.state.startLocation.lng}`,`${this.state.endLocation.lat},${this.state.endLocation.lng}`)
   }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <View style={{marginTop: 20, marginBottom: 20}}>
-            <Text>Enter a start address</Text>
-            <TextInput
-              style={{height: 40, width: viewportWidth / 1.5, backgroundColor: 'white', borderRadius: 10, padding: 5}}
-              onChangeText={(startAddress) => this.setState({startAddress})}
-              value={this.state.startAddress} />
-          </View>
-          <View style={{marginBottom: 20}}>
-            <Text>Enter an end address</Text>
-            <TextInput
-              style={{height: 40, width: viewportWidth / 1.5,  backgroundColor: 'white', borderRadius: 10, padding: 5}}
-              onChangeText={(endAddress) => this.setState({endAddress})}
-              value={this.state.endAddress} />
+          <View style={{width: 250, height: 350, marginTop: 20, marginBottom: 20}}>
+            <Text>Enter a start location</Text>
+            <GooglePlacesAutocomplete
+              placeholder='Start location'
+              minLength={3} // minimum length of text to search
+              autoFocus={false}
+              returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+              listViewDisplayed='auto'    // true/false/undefined
+              fetchDetails={true}
+              renderDescription={row => row.description} // custom description render
+              onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+                console.log("start", details.geometry.location);
+                this.setState({startLocation: details.geometry.location})
+              }}
+              
+              getDefaultValue={() => ''}
+              
+              query={{
+                // available options: https://developers.google.com/places/web-service/autocomplete
+                key: PLACES_KEY,
+                language: 'en', // language of the results
+                // types: '(cities)' // default: 'geocode'
+              }}
+              
+              styles={{
+                textInputContainer: {
+                  width: '100%'
+                },
+                description: {
+                  fontWeight: 'bold'
+                },
+                predefinedPlacesDescription: {
+                  color: '#1faadb'
+                }
+              }}
+              
+              currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+              currentLocationLabel="Current location"
+              // nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+              // GoogleReverseGeocodingQuery={{
+              //   // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+              // }}
+              // GooglePlacesSearchQuery={{
+              //   // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+              //   rankby: 'distance',
+              //   types: 'food'
+              // }}
+
+              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+              // predefinedPlaces={[homePlace, workPlace]}
+
+              debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+              // renderLeftButton={()  => <Image source={require('../assets/images/Assets.xcassets/icon-reset.imageset/Reset-Tab-Image@3x.png')} />}
+              // renderRightButton={() => <Text>Custom text after the input</Text>}
+            />
+            <Text>Enter a finish location</Text>
+            <GooglePlacesAutocomplete
+              placeholder='Finish location'
+              minLength={3} // minimum length of text to search
+              autoFocus={false}
+              returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+              listViewDisplayed='auto'    // true/false/undefined
+              fetchDetails={true}
+              renderDescription={row => row.description} // custom description render
+              onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+                console.log("end", details.geometry.location);
+                this.setState({endLocation: details.geometry.location})
+              }}
+              
+              getDefaultValue={() => ''}
+              
+              query={{
+                // available options: https://developers.google.com/places/web-service/autocomplete
+                key: PLACES_KEY,
+                language: 'en', // language of the results
+                // types: '(cities)' // default: 'geocode'
+              }}
+              
+              styles={{
+                textInputContainer: {
+                  width: '100%'
+                },
+                description: {
+                  fontWeight: 'bold'
+                },
+                predefinedPlacesDescription: {
+                  color: '#1faadb'
+                }
+              }}
+              
+              currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+              currentLocationLabel="Current location"
+              // nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+              // GoogleReverseGeocodingQuery={{
+              //   // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+              // }}
+              // GooglePlacesSearchQuery={{
+              //   // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+              //   rankby: 'distance',
+              //   types: 'food'
+              // }}
+
+              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+              // predefinedPlaces={[homePlace, workPlace]}
+
+              debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+              // renderLeftButton={()  => <Image source={require('../assets/images/Assets.xcassets/icon-reset.imageset/Reset-Tab-Image@3x.png')} />}
+              // renderRightButton={() => <Text>Custom text after the input</Text>}
+            />
           </View>
           <Button large rounded title="Start Journey" onPress={() => this.showRouteOnMap()} color={'#fff'} backgroundColor={'#f00'}></Button>
         </View>
