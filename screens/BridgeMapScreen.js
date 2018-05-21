@@ -7,28 +7,22 @@ import {
   Dimensions,
   Button,
   TouchableOpacity
-} from 'react-native';
-import { Constants, Location, Permissions, Notifications } from 'expo';
-import MapView from 'react-native-maps';
+} from 'react-native'
+import { Constants, Location, Permissions, Notifications } from 'expo'
+import MapView from 'react-native-maps'
 import Polyline from '@mapbox/polyline'
 import haversine from 'haversine'
 
-import { connect } from 'react-redux';
-import * as actions from '../actions';
+import { connect } from 'react-redux'
+import * as actions from '../actions'
 
-// start (532 barrabool rd)
-// -38.1707008,144.2724222
+import Colors from '../constants/Colors'
 
-// end - moriac somewhere
-// -38.2646152,144.1676303
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
-import Colors from '../constants/Colors';
-
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
-const BRIDGE_WARNING_DISTANCE = 500;
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
+const BRIDGE_WARNING_DISTANCE = 500
 
 class BridgeMapScreen extends React.Component {
 
@@ -43,8 +37,7 @@ class BridgeMapScreen extends React.Component {
       locationResult: null,
       isMapReady: false,
       mapWarning: false,
-      mapWarningMessage: "",
-      coords: {}
+      mapWarningMessage: ""
     }
   }
 
@@ -53,27 +46,8 @@ class BridgeMapScreen extends React.Component {
     title: 'Bridge Map',
   }
 
-  async getDirections(startLoc, destinationLoc) {
-    try {
-      let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${ startLoc }&destination=${ destinationLoc }`)
-      let respJson = await resp.json();
-      let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
-      let coords = points.map((point, index) => {
-        return  {
-          latitude : point[0],
-          longitude : point[1]
-        }
-      })
-      this.setState({coords: coords})
-      return coords
-    } catch(error) {
-      return error
-    }
-  };
-
   componentDidUpdate() {
   }
-
 
   componentDidMount() {
 
@@ -82,7 +56,6 @@ class BridgeMapScreen extends React.Component {
     this._alertIfRemoteNotificationsDisabledAsync()
     this._grantLocationPermission()
 
-    this.getDirections('-38.1707008,144.2724222','-38.2646152,144.1676303')
   }
 
   _alertIfRemoteNotificationsDisabledAsync = async () => {
@@ -247,8 +220,9 @@ class BridgeMapScreen extends React.Component {
               // image={require('../assets/images/Assets.xcassets/AddPin.imageset/Pathwayz-Icon-256.png')}
             />
           ))}
-          {/* <MapView.Polyline coordinates={this.state.coords} strokeWidth={2} strokeColor="red" /> */}
-
+          {this.props.Coords.length &&
+          <MapView.Polyline coordinates={this.props.Coords} strokeWidth={2} strokeColor="red" />
+          }
         </MapView>
         }
         {this.state.mapWarning &&
@@ -274,11 +248,11 @@ const mapStateToProps = state => {
   return {Bridges: state.Bridges,
   VehicleHeight: state.VehicleHeight,
   AustralianState: state.AustralianState,
-  Route: state.Route,
+  Coords: state.Coords,
   Screen: state.Screen}
 }
 
-export default connect(mapStateToProps)(BridgeMapScreen);
+export default connect(mapStateToProps, actions)(BridgeMapScreen);
 
 const styles = StyleSheet.create({
   container: {

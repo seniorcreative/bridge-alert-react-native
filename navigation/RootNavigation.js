@@ -33,7 +33,7 @@ export default class RootNavigator extends React.Component {
   }
 
   render() {
-    return <RootStackNavigator onNavigationStateChange={(prevState, nextState) => {console.log('nav state changed', prevState, nextState)}} />
+    return <RootStackNavigator />
   }
 
   _registerForPushNotifications() {

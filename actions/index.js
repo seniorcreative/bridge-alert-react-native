@@ -13,11 +13,11 @@ export const setAustralianState = (australianState) => {
     }
 }
 
-// Route is an array, start and end point lat and lon
-export const setRoute = (route) => {
+// Coords is an array of lat & lon points for a polyline.
+export const setCoords = (coords) => {
     return {
-        type: "set_route",
-        payload: route
+        type: "set_coords",
+        payload: coords
     }
 }
 

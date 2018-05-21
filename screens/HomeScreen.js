@@ -79,9 +79,7 @@ class HomeScreen extends React.Component {
     this.props.setVehicleHeight(this.props.Vehicles[pageNum].height);
 
     this.setState({
-      currentItemName: this.props.Vehicles[pageNum].title,
-      // currentHeight: this.props.Vehicles[pageNum].height,
-      // currentItemHeight: this.props.Vehicles[pageNum].height
+      currentItemName: this.props.Vehicles[pageNum].title
     })
   }
 
@@ -198,7 +196,7 @@ const mapStateToProps = state => {
       Vehicles: state.Vehicles,
       VehicleHeight: state.VehicleHeight,
       AustralianState: state.AustralianState,
-      Route: state.Route,
+      Coords: state.Coords,
       Screen: state.Screen
     }
 };

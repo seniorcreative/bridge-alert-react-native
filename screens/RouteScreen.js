@@ -11,16 +11,23 @@ import {
   TouchableOpacity,
   View,
   Dimensions,
-} from 'react-native';
+} from 'react-native'
+import Polyline from '@mapbox/polyline'
+import { connect } from 'react-redux'
+import * as actions from '../actions'
 
-import { Button } from 'react-native-elements';
+// start (532 barrabool rd)
+// -38.1707008,144.2724222
 
-import Colors from '../constants/Colors';
+// end - moriac somewhere
+// -38.2646152,144.1676303
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+import { Button } from 'react-native-elements'
+import Colors from '../constants/Colors'
 
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
-export default class RouteScreen extends React.Component {
+class RouteScreen extends React.Component {
 
   constructor (props) {
     super(props)
@@ -30,19 +37,46 @@ export default class RouteScreen extends React.Component {
       startLocation: {lat: null, lng: null},
       endAddress: '',
       endLocation: {lat: null, lng: null},
-      coords: {}
     }
 
-
   }
+
   static navigationOptions = {
     header: null,
     title: 'Route',
-  };
+  }
+
+  async getDirections(startLoc, destinationLoc) {
+    console.log('getDirections', startLoc, destinationLoc)
+    const { navigate } = this.props.navigation;
+    try {
+      console.log('trying')
+      let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${ startLoc }&destination=${ destinationLoc }`)
+      let respJson = await resp.json();
+      let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
+      let coords = points.map((point, index) => {
+        return  {
+          latitude : point[0],
+          longitude : point[1]
+        }
+      })
+      console.log('got coords', coords)
+      this.props.setCoords(coords) // Save coords in redux state object
+      navigate('BridgeMap')
+      // return coords
+    } catch(error) {
+      console.log('error getting coords', error)
+      return error
+    }
+  }
+
+  showRouteOnMap () {
+    // This func needs to take the autocomplete start and end lat and long
+    // from the two inputs.
+    this.getDirections('-38.1707008,144.2724222','-38.2646152,144.1676303')
+  }
 
   render() {
-
-    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
@@ -60,13 +94,24 @@ export default class RouteScreen extends React.Component {
               onChangeText={(endAddress) => this.setState({endAddress})}
               value={this.state.endAddress} />
           </View>
-          <Button large rounded title="Start Journey" onPress={() => navigate('BridgeMap')} color={'#fff'} backgroundColor={'#f00'}></Button>
+          <Button large rounded title="Start Journey" onPress={() => this.showRouteOnMap()} color={'#fff'} backgroundColor={'#f00'}></Button>
         </View>
       </View>
     )
   }
 
 }
+
+const mapStateToProps = state => {
+  // console.log("mapStateToProps on bridge map screen", state, state.Bridges)
+  return {Bridges: state.Bridges,
+  VehicleHeight: state.VehicleHeight,
+  AustralianState: state.AustralianState,
+  Coords: state.Coords,
+  Screen: state.Screen}
+}
+
+export default connect(mapStateToProps, actions)(RouteScreen);
 
 
 const styles = StyleSheet.create({

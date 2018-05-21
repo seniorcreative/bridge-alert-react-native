@@ -1,6 +1,6 @@
 export default (state = 'HomeScreen', action) => {
     switch(action.type) {
-        case 'set\_screen':
+        case 'set_screen':
             return action.payload;
         default:
             return state;
