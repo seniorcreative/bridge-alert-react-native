@@ -149,7 +149,7 @@ class HomeScreen extends React.Component {
             </View>
             <Button onPress={() => this._startJourney()} medium rounded title="Start" style={{alignSelf: 'center', marginTop: 12, width: '66%'}} color={'#fff'} backgroundColor={'#f00'}></Button>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Routes')}>
-              <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Plan My Journey</Text>
+              <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Plan My Route</Text>
             </TouchableOpacity>
           </View>
       </View>

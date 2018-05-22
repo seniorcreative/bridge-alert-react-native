@@ -23,6 +23,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 const BRIDGE_WARNING_DISTANCE = 500
+const MAP_DELTA = 0.25
 
 class BridgeMapScreen extends React.Component {
 
@@ -83,6 +84,11 @@ class BridgeMapScreen extends React.Component {
     // console.log("loc check ", this.props)
     // console.log(this.props.Bridges, this.props.AustralianState);
 
+    if (this.props.Coords.length > 0) {
+      console.log("centerin on first co-ords", this.props.Coords[0])
+      this.handleCenter(this.props.Coords[0])
+    }
+
     if (!this.props.Bridges[this.props.AustralianState]) return;
     this.props.Bridges[this.props.AustralianState].map((marker, index) => {
         const end = {
@@ -140,13 +146,13 @@ class BridgeMapScreen extends React.Component {
     this.setState({mapWarning: false});
   }
 
-  handleCenter = () => {
+  handleCenter = ( coord ) => {
     // const { latitude, longitude, latitudeDelta, longitudeDelta } = this.state.location;
     this.map.animateToRegion({
-      latitude: this.state.latitude,
-      longitude: this.state.longitude,
-      latitudeDelta: 0.99,
-      longitudeDelta: 0.99
+      latitude: coord.latitude,
+      longitude: coord.longitude,
+      latitudeDelta: MAP_DELTA,
+      longitudeDelta: MAP_DELTA
     })
   }
 
@@ -202,8 +208,8 @@ class BridgeMapScreen extends React.Component {
           initialRegion={{
             latitude: currentLatitude,
             longitude: currentLongitude,
-            latitudeDelta: 0.99,
-            longitudeDelta: 0.99,
+            latitudeDelta: MAP_DELTA,
+            longitudeDelta: MAP_DELTA,
           }}
           showsUserLocation={true}
           followUserLocation={true}
@@ -211,18 +217,24 @@ class BridgeMapScreen extends React.Component {
           ref={map => {this.map = map}}
         >
           {this.state.isMapReady && this.props.Bridges[this.props.AustralianState].map(marker => (
-            <MapView.Marker
-              key={marker[0]}
-              coordinate={{latitude: marker[3], longitude: marker[4]}}
-              title={`${marker[1]} ${marker[2]}m`}
-              pinColor={"#000000"}
-              // It doesn't like these markers at all.
-              // image={require('../assets/images/Assets.xcassets/AddPin.imageset/Pathwayz-Icon-256.png')}
-            />
+            <View>
+              <MapView.Marker
+                key={marker[0]}
+                coordinate={{latitude: marker[3], longitude: marker[4]}}
+                title={`${marker[1]} ${marker[2]}m`}
+                pinColor={"#000000"}
+              />
+              <MapView.Circle
+                center={{latitude: marker[3], longitude: marker[4]}} 
+                radius={BRIDGE_WARNING_DISTANCE}
+                fillColor={'rgba(255,0,0,0.25)'}
+                strokeColor={'rgba(255,0,0,0.0)'}
+              />
+            </View>
           ))}
-          {this.props.Coords.length &&
-          <MapView.Polyline coordinates={this.props.Coords} strokeWidth={2} strokeColor="red" />
-          }
+          {!!this.props.Coords.length && (<View>
+            <MapView.Polyline coordinates={this.props.Coords} strokeWidth={2} strokeColor="red" />
+          </View>)}
         </MapView>
         }
         {this.state.mapWarning &&
@@ -234,7 +246,7 @@ class BridgeMapScreen extends React.Component {
         <View style={styles.heightTab}>
           <Text style={styles.heightTabText}>{this.props.VehicleHeight / 10}m</Text>
         </View>
-        <TouchableOpacity onPress={() => this.handleCenter()} style={styles.iconCenter}>
+        <TouchableOpacity onPress={() => this.handleCenter({latitude: this.state.latitude, longitude: this.state.longitude})} style={styles.iconCenter}>
           <Image source={require('../assets/images/Assets.xcassets/icon-center.imageset/center-icon-75.png')} style={styles.iconCenterImage}></Image>
         </TouchableOpacity>
       </View>

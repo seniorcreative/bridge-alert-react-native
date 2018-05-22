@@ -76,11 +76,23 @@ class RouteScreen extends React.Component {
     this.getDirections(`${this.state.startLocation.lat},${this.state.startLocation.lng}`,`${this.state.endLocation.lat},${this.state.endLocation.lng}`)
   }
 
+  resetRoute () {
+    this.setState({
+      startAddress: '',
+      startLocation: {lat: null, lng: null},
+      endAddress: '',
+      endLocation: {lat: null, lng: null},
+    })
+    this.startAddress.setAddressText('')
+    this.endAddress.setAddressText('')
+    this.props.setCoords([])
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <View style={{width: 250, height: 350, marginTop: 20, marginBottom: 20}}>
+          <View style={{width: '90%', height: 300, marginTop: 20, marginBottom: 20}}>
             <Text>Enter a start location</Text>
             <GooglePlacesAutocomplete
               placeholder='Start location'
@@ -90,8 +102,17 @@ class RouteScreen extends React.Component {
               listViewDisplayed='auto'    // true/false/undefined
               fetchDetails={true}
               renderDescription={row => row.description} // custom description render
+              ref={startAddress => {this.startAddress = startAddress}}
               onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                console.log("start", details.geometry.location);
+                console.log("start", data, details);
+                for (let a in details.address_components) {
+                  const { types } = details.address_components[a], stateKey = 'administrative_area_level_1'
+                  console.log('types', types)
+                  if (types.indexOf(stateKey) !== -1) {
+                    // console.log("State is ", details.address_components[a].short_name)
+                    this.props.setAustralianState( details.address_components[a].short_name )
+                  }
+                }
                 this.setState({startLocation: details.geometry.location})
               }}
               
@@ -106,14 +127,17 @@ class RouteScreen extends React.Component {
               
               styles={{
                 textInputContainer: {
-                  width: '100%'
+                  width: '100%',
+                  backgroundColor: '#fc0',
                 },
+                backgroundColor: '#fc0',
                 description: {
                   fontWeight: 'bold'
                 },
                 predefinedPlacesDescription: {
                   color: '#1faadb'
-                }
+                },
+                marginBottom: 20
               }}
               
               currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
@@ -144,8 +168,9 @@ class RouteScreen extends React.Component {
               listViewDisplayed='auto'    // true/false/undefined
               fetchDetails={true}
               renderDescription={row => row.description} // custom description render
+              ref={endAddress => {this.endAddress = endAddress}}
               onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                console.log("end", details.geometry.location);
+                console.log("end", data, details.geometry.location);
                 this.setState({endLocation: details.geometry.location})
               }}
               
@@ -160,7 +185,8 @@ class RouteScreen extends React.Component {
               
               styles={{
                 textInputContainer: {
-                  width: '100%'
+                  width: '100%',
+                  backgroundColor: '#fc0'
                 },
                 description: {
                   fontWeight: 'bold'
@@ -190,7 +216,10 @@ class RouteScreen extends React.Component {
               // renderRightButton={() => <Text>Custom text after the input</Text>}
             />
           </View>
-          <Button large rounded title="Start Journey" onPress={() => this.showRouteOnMap()} color={'#fff'} backgroundColor={'#f00'}></Button>
+          <Button medium rounded title="Start My Route" onPress={() => this.showRouteOnMap()} color={'#fff'} backgroundColor={'#f00'}></Button>
+          <TouchableOpacity onPress={() => this.resetRoute()}>
+              <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Clear Route</Text>
+            </TouchableOpacity>
         </View>
       </View>
     )
