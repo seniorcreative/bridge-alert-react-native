@@ -136,9 +136,9 @@ class HomeScreen extends React.Component {
           <View style={styles.welcomeContainer}>
             <Text style={{marginTop: 10, height: 25}}>Choose a State</Text>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 25}}>
+              <Button small rounded title="VIC" onPress={() => this._pickState('VIC')} backgroundColor={(this.props.AustralianState === 'VIC') ? '#333' : '#ccc'}></Button>
               <Button small rounded title="NSW" onPress={() => this._pickState('NSW')} backgroundColor={(this.props.AustralianState === 'NSW') ? '#333' : '#ccc'}></Button>
               <Button small rounded title="QLD" onPress={() => this._pickState('QLD')} backgroundColor={(this.props.AustralianState === 'QLD') ? '#333' : '#ccc'}></Button>
-              <Button small rounded title="VIC" onPress={() => this._pickState('VIC')} backgroundColor={(this.props.AustralianState === 'VIC') ? '#333' : '#ccc'}></Button>
             </View>
             <View style={{width: viewportWidth}}>
               <FlatList
@@ -219,8 +219,8 @@ const mapStateToProps = state => {
     return {
       Vehicles: state.Vehicles,
       VehicleHeight: state.VehicleHeight,
-      AustralianState: state.AustralianState,
-      Coords: state.Coords,
+      AustralianState: state.AustralianState.austate,
+      Coords: state.Coords.coords,
       Screen: state.Screen
     }
 };

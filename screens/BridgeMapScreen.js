@@ -280,7 +280,7 @@ const mapStateToProps = state => {
   // console.log("mapStateToProps on bridge map screen", state, state.Bridges)
   return {Bridges: state.Bridges,
   VehicleHeight: state.VehicleHeight,
-  AustralianState: state.AustralianState,
+  AustralianState: state.AustralianState.austate,
   Coords: state.Coords.coords,
   Screen: state.Screen}
 }

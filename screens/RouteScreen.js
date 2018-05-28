@@ -122,6 +122,7 @@ class RouteScreen extends React.Component {
                 // available options: https://developers.google.com/places/web-service/autocomplete
                 key: PLACES_KEY,
                 language: 'en', // language of the results
+                components: 'country:au'
                 // types: '(cities)' // default: 'geocode'
               }}
               
@@ -147,9 +148,10 @@ class RouteScreen extends React.Component {
               //   // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
               // }}
               // GooglePlacesSearchQuery={{
-              //   // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-              //   rankby: 'distance',
-              //   types: 'food'
+                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                // rankby: 'distance',
+                // types: 'food'
+                // region: 'au'
               // }}
 
               filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
@@ -180,6 +182,7 @@ class RouteScreen extends React.Component {
                 // available options: https://developers.google.com/places/web-service/autocomplete
                 key: PLACES_KEY,
                 language: 'en', // language of the results
+                components: 'country:au'
                 // types: '(cities)' // default: 'geocode'
               }}
               
@@ -203,9 +206,10 @@ class RouteScreen extends React.Component {
               //   // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
               // }}
               // GooglePlacesSearchQuery={{
-              //   // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-              //   rankby: 'distance',
-              //   types: 'food'
+                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                // rankby: 'distance',
+                // types: 'food'
+                // components: 'country:au'
               // }}
 
               filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
@@ -231,8 +235,8 @@ const mapStateToProps = state => {
   // console.log("mapStateToProps on bridge map screen", state, state.Bridges)
   return {Bridges: state.Bridges,
   VehicleHeight: state.VehicleHeight,
-  AustralianState: state.AustralianState,
-  Coords: state.Coords,
+  AustralianState: state.AustralianState.austate,
+  Coords: state.Coords.coords,
   Screen: state.Screen}
 }
 
