@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Bridge Alert",
-    "description": "Bridge alert - collision warning notification system.",
+    "description": "Bridge alert - low clearance warning notification system.",
     "slug": "bridge-alert",
     "privacy": "unlisted",
     "sdkVersion": "24.0.0",
@@ -10,7 +10,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/logo-yellow.png",
     "splash": {
-      "image": "./assets/images/Mosaic-ellipse.png",
+      "image": "./assets/images/Mosaic-ellipse-Logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffcc00"
     },

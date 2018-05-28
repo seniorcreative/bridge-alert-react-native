@@ -4245,6 +4245,10 @@ react-native-vector-icons@4.5.0:
     xmldoc "^0.4.0"
     yargs "^9.0.0"
 
+react-navigation-addons@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/react-navigation-addons/-/react-navigation-addons-0.0.0.tgz#f56478227368799a90c67411de53ea997d2948d1"
+
 react-navigation@^1.0.0-beta.21:
   version "1.5.12"
   resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-1.5.12.tgz#e226b4906c76dde55ddf7cc0a62ea04c77140d8a"

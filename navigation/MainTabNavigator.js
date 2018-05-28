@@ -55,6 +55,10 @@ export default TabNavigator(
             color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
           />
         );
+      },
+      tabBarOnPress: (e) => {
+        console.log("Tab bar on press", e)
+        e.jumpToIndex(e.scene.index)
       }
     }),
     tabBarComponent: TabBarBottom,

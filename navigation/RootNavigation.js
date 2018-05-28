@@ -16,7 +16,7 @@ const RootStackNavigator = StackNavigator(
       // title:'Bridge Alert',
       headerTitleStyle: {
         fontWeight: 'normal',
-      }
+      },
     }),
     cardStyle: { shadowColor: 'transparent' }
   }
@@ -33,7 +33,13 @@ export default class RootNavigator extends React.Component {
   }
 
   render() {
-    return <RootStackNavigator />
+    return <RootStackNavigator
+      onNavigationStateChange={(prevState, currentState) => {
+        // console.log("Changed nav", prevState.routes[0].index, currentState.routes[0].index)
+        // currentState.routes[0].routes[currentState.routes[0].index].params = {xxx: 'xxx'}
+        // console.log("Changed nav current state", currentState)
+      }}
+    />
   }
 
   _registerForPushNotifications() {
@@ -48,6 +54,6 @@ export default class RootNavigator extends React.Component {
   }
 
   _handleNotification = ({ origin, data }) => {
-    console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
+    // console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
   };
 }

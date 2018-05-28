@@ -68,6 +68,12 @@ class HomeScreen extends React.Component {
     title: 'Height'
   };
 
+  componentDidMount() {
+    // this.list.getItemLayout = () => {
+      setTimeout(() => {this.setListPage(1)}, 200)
+    // }
+  }
+
   _onScrollEnd(e) {
     let contentOffset = e.nativeEvent.contentOffset;
     let viewSize = e.nativeEvent.layoutMeasurement;
@@ -81,6 +87,14 @@ class HomeScreen extends React.Component {
     this.setState({
       currentItemName: this.props.Vehicles[pageNum].title
     })
+  }
+
+  setListPage(page) {
+    // this.setState({selected: this.state.page+1}
+    console.log('set list page', page)
+    let pageRanged = Math.max(0, Math.min(5, page))
+    this.setState({ page: pageRanged })
+    this.list.scrollToIndex({ index: pageRanged, animated: true })
   }
 
   _onHeightDn () {
@@ -137,10 +151,20 @@ class HomeScreen extends React.Component {
                 onMomentumScrollEnd={this._onScrollEnd}
                 renderItem={this._renderVehicle}
                 extraData={this.state}
+                ref={list => {this.list = list}}
+                getItemLayout={(data, index) => (
+                  {length: sliderWidth, offset: sliderWidth * index, index}
+                )}
               />
-              <Button rounded small title="&lt;" onPress={() => this.setState({selected: this.state.page-1})} style={{position: 'absolute', left: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
-              <Button rounded small title="&gt;" onPress={() => this.setState({selected: this.state.page+1})} style={{position: 'absolute', right: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
-            </View>
+              <View>
+              {(this.state.page > 0 &&
+                <Button rounded small title="&lt;" onPress={() => this.setListPage(this.state.page-1)} style={{position: 'absolute', left: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
+              )}
+              {(this.state.page < 5 &&
+                <Button rounded small title="&gt;" onPress={() => this.setListPage(this.state.page+1)} style={{position: 'absolute', right: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
+              )}
+              </View>
+              </View>
             <Text style={{alignSelf: 'center', color: Colors.red, fontSize: 28, fontWeight: 'bold'}}>{this.state.currentItemName}</Text>
             <View style={{width: viewportWidth * 0.75,  flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
               <Button medium rounded title=" - " onPress={this._onHeightDn} fontSize={30} color={'#000'} backgroundColor={'#fff'}></Button>
