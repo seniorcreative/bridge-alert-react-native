@@ -20,9 +20,9 @@ import * as actions from '../actions'
 import Colors from '../constants/Colors'
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
-
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
+
 const BRIDGE_WARNING_DISTANCE = 500
 const DEFAULT_PADDING = { top: 25, right: 25, bottom: 25, left: 25 }
 const MAP_DELTA = 0.25

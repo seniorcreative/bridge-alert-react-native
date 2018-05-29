@@ -10,7 +10,9 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Dimensions
+  Dimensions,
+  Slider,
+  Switch
 } from 'react-native';
 import { Button } from 'react-native-elements';
 
@@ -25,10 +27,23 @@ export default class RouteScreen extends React.Component {
     title: 'Settings',
   };
 
+  _onSliderChange (value ) {
+    console.log("slider", value)
+  }
+
+  _onSwitchChange (value ) {
+    console.log("switch", value)
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
+          <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 28, marginTop: 30, marginBottom: 20, fontWeight: 'bold'}}>Settings</Text>
+          <Text style={{alignSelf: 'left', marginLeft: 10}}>Set size of warning radius (m)</Text>
+          <Slider style={styles.slider} minimumTrackTintColor={'#f00'} step={1} maximumValue={750} minimumValue={50} value={100} onValueChange={(value) => this._onSliderChange(value)}/>
+          <Text style={{alignSelf: 'left', marginLeft: 10}}>Show warning regions</Text>
+          <Switch value={false} onTintColor={'#f00'} onValueChange={(value) => this._onSwitchChange(value)}/>
         </View>
       </View>
     )
@@ -60,4 +75,8 @@ const styles = StyleSheet.create({
     width: viewportWidth,
     flex: 1
   },
+  slider: {
+    width: viewportWidth - 20,
+    height: 50
+  }
 })

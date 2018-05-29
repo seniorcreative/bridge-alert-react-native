@@ -1,6 +1,19 @@
-import { Notifications } from 'expo';
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  Button,
+  TouchableOpacity
+} from 'react-native'
+import { Constants, Location, Permissions, Notifications } from 'expo'
+
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
@@ -33,13 +46,14 @@ export default class RootNavigator extends React.Component {
   }
 
   render() {
-    return <RootStackNavigator
+    return (
+      <RootStackNavigator
       onNavigationStateChange={(prevState, currentState) => {
         // console.log("Changed nav", prevState.routes[0].index, currentState.routes[0].index)
         // currentState.routes[0].routes[currentState.routes[0].index].params = {xxx: 'xxx'}
         // console.log("Changed nav current state", currentState)
       }}
-    />
+    />)
   }
 
   _registerForPushNotifications() {
@@ -57,3 +71,23 @@ export default class RootNavigator extends React.Component {
     // console.log(`Push notification ${origin} with data: ${JSON.stringify(data)}`);
   };
 }
+
+const styles = StyleSheet.create({
+  heightTab: {
+    width: 75, 
+    height: 55,
+    backgroundColor: '#111111', 
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    position: 'absolute',
+    top: height - 192,
+    left: 10,
+    borderRadius: 10
+  },
+  heightTabText: {
+    textAlign: 'center',
+    color: '#ffffff',
+    fontSize: 16
+  }
+})

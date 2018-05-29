@@ -29,6 +29,8 @@ import { Button } from 'react-native-elements'
 import Colors from '../constants/Colors'
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 class RouteScreen extends React.Component {
 
@@ -85,7 +87,7 @@ class RouteScreen extends React.Component {
     })
     this.startAddress.setAddressText('')
     this.endAddress.setAddressText('')
-    this.props.setCoords([])
+    this.props.setCoords({coords: []})
   }
 
   render() {
@@ -104,16 +106,19 @@ class RouteScreen extends React.Component {
               renderDescription={row => row.description} // custom description render
               ref={startAddress => {this.startAddress = startAddress}}
               onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                console.log("start", data, details);
+                // console.log("start addy", data, details);
                 for (let a in details.address_components) {
                   const { types } = details.address_components[a], stateKey = 'administrative_area_level_1'
-                  console.log('types', types)
+                  // console.log('types', types)
                   if (types.indexOf(stateKey) !== -1) {
                     // console.log("State is ", details.address_components[a].short_name)
                     this.props.setAustralianState( details.address_components[a].short_name )
                   }
                 }
-                this.setState({startLocation: details.geometry.location})
+                this.setState({
+                  startAddress: data.description,
+                  startLocation: details.geometry.location
+                })
               }}
               
               getDefaultValue={() => ''}
@@ -134,6 +139,12 @@ class RouteScreen extends React.Component {
                 backgroundColor: '#fc0',
                 description: {
                   fontWeight: 'bold'
+                },
+                loader: {
+                  position: 'absolute',
+                  top: 200,
+                  left: 100,
+                  backgroundColor: '#ff0000'
                 },
                 predefinedPlacesDescription: {
                   color: '#1faadb'
@@ -157,7 +168,7 @@ class RouteScreen extends React.Component {
               filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
               // predefinedPlaces={[homePlace, workPlace]}
 
-              debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+              debounce={100} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
               // renderLeftButton={()  => <Image source={require('../assets/images/Assets.xcassets/icon-reset.imageset/Reset-Tab-Image@3x.png')} />}
               // renderRightButton={() => <Text>Custom text after the input</Text>}
             />
@@ -172,8 +183,11 @@ class RouteScreen extends React.Component {
               renderDescription={row => row.description} // custom description render
               ref={endAddress => {this.endAddress = endAddress}}
               onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                console.log("end", data, details.geometry.location);
-                this.setState({endLocation: details.geometry.location})
+                console.log("end", data, details.geometry.location)
+                this.setState({
+                  endAddress: data.description,
+                  endLocation: details.geometry.location
+                })
               }}
               
               getDefaultValue={() => ''}
@@ -215,15 +229,15 @@ class RouteScreen extends React.Component {
               filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
               // predefinedPlaces={[homePlace, workPlace]}
 
-              debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+              debounce={100} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
               // renderLeftButton={()  => <Image source={require('../assets/images/Assets.xcassets/icon-reset.imageset/Reset-Tab-Image@3x.png')} />}
               // renderRightButton={() => <Text>Custom text after the input</Text>}
             />
           </View>
-          <Button medium rounded title="Start My Route" onPress={() => this.showRouteOnMap()} color={'#fff'} backgroundColor={'#f00'}></Button>
+          <Button medium rounded title="Start My Route" onPress={() => this.showRouteOnMap()} disabled={this.state.startAddress === '' || this.state.endAddress === ''} color={'#fff'} backgroundColor={'#f00'}></Button>
           <TouchableOpacity onPress={() => this.resetRoute()}>
-              <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Clear Route</Text>
-            </TouchableOpacity>
+            <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Clear Route</Text>
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -266,5 +280,5 @@ const styles = StyleSheet.create({
   image: {
     width: viewportWidth,
     flex: 1
-  },
+  }
 })

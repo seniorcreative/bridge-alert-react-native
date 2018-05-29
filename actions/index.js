@@ -28,3 +28,19 @@ export const setScreen = (screen) => {
         payload: screen
     }
 }
+
+// The size of the coloured overlay zones around the markers
+export const setWarningRadius = (radius) => {
+    return {
+        type: "set_warning_radius",
+        payload: radius
+    }
+}
+
+// The visibility of the coloured overlay zones around the markers
+export const setWarningVisible = (visible) => {
+    return {
+        type: "set_warning_visible",
+        payload: visible
+    }
+}

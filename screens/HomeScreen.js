@@ -20,7 +20,9 @@ import * as actions from '../actions';
 
 import Colors from '../constants/Colors';
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 function wp (percentage) {
   const value = (percentage * viewportWidth) / 100;
@@ -111,9 +113,12 @@ class HomeScreen extends React.Component {
       return (
         <View>
           <Image source={vehicleImages[item.key - 1]} 
-          style={{margin: 10, 
+          style={{marginTop: 30,
+                  marginLeft: 10,
+                  marginRight: 10, 
                   width: viewportWidth - 20, 
-                  alignSelf: 'stretch', 
+                  height: 150,
+                  alignSelf: 'center',
                   resizeMode: 'contain'}} />
         </View>      
       )
@@ -145,7 +150,7 @@ class HomeScreen extends React.Component {
                 data={this.props.Vehicles}
                 maxSwipeDistance={viewportWidth}
                 horizontal={true}
-                style={{padding: 0, width: viewportWidth, height: 250}}
+                style={{padding: 0, width: viewportWidth, height: 220, marginTop: 20}}
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={false}
                 onMomentumScrollEnd={this._onScrollEnd}
@@ -251,5 +256,5 @@ const styles = StyleSheet.create({
   image: {
     width: viewportWidth,
     flex: 1
-  },
+  }
 })
