@@ -5,6 +5,7 @@ import VehicleHeightReducer from './VehicleHeightReducer';
 import AustralianStateReducer from './AustralianStateReducer';
 import CoordsReducer from './CoordsReducer';
 import ScreenReducer from './ScreenReducer';
+import WarningReducer from './WarningReducer';
 
 export default combineReducers({
     Bridges: BridgeReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     VehicleHeight: VehicleHeightReducer,
     AustralianState: AustralianStateReducer,
     Coords: CoordsReducer,
-    Screen: ScreenReducer
+    Screen: ScreenReducer,
+    Warnings: WarningReducer
 });

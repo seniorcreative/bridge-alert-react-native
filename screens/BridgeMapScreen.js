@@ -23,7 +23,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
-const BRIDGE_WARNING_DISTANCE = 500
+// const BRIDGE_WARNING_DISTANCE = 500
 const DEFAULT_PADDING = { top: 25, right: 25, bottom: 25, left: 25 }
 const MAP_DELTA = 0.25
 
@@ -121,7 +121,7 @@ class BridgeMapScreen extends React.Component {
           // if (+marker[5] < 2000 && this.state.alerts.length < 1) {
 
           // Check if we are near to a bridge.
-          if (+marker[5] < BRIDGE_WARNING_DISTANCE && marker[6] === false) {
+          if (+marker[5] < this.props.Warnings.radius && marker[6] === false) {
           
           let stateProp = this.props.Bridges[this.props.AustralianState][index]
           stateProp[6] = true
@@ -245,12 +245,14 @@ class BridgeMapScreen extends React.Component {
                 title={`${marker[1]} ${marker[2]}m`}
                 pinColor={"#000000"}
               />
+              {!!this.props.Warnings.visible &&
               <MapView.Circle
                 center={{latitude: marker[3], longitude: marker[4]}} 
-                radius={BRIDGE_WARNING_DISTANCE}
+                radius={this.props.Warnings.radius}
                 fillColor={'rgba(255,0,0,0.25)'}
                 strokeColor={'rgba(255,0,0,0.0)'}
               />
+              }
             </View>
           ))}
           {!!this.props.Coords.length && (<View>
@@ -282,7 +284,8 @@ const mapStateToProps = state => {
   VehicleHeight: state.VehicleHeight,
   AustralianState: state.AustralianState.austate,
   Coords: state.Coords.coords,
-  Screen: state.Screen}
+  Screen: state.Screen,
+  Warnings: state.Warnings}
 }
 
 export default connect(mapStateToProps, actions)(BridgeMapScreen);

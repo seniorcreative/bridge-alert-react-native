@@ -55,7 +55,7 @@ class HomeScreen extends React.Component {
     // using the stepping increment controls. Height must be divided down.
     this.state = {
       page: 0,
-      // currentHeight: 25,
+      direction: 'r2l',
       currentItemName: 'Car',
       currentItemHeight: 'Car'
     }
@@ -91,11 +91,12 @@ class HomeScreen extends React.Component {
     })
   }
 
-  setListPage(page) {
+  setListPage(page, direction) {
     // this.setState({selected: this.state.page+1}
     console.log('set list page', page)
     let pageRanged = Math.max(0, Math.min(5, page))
     this.setState({ page: pageRanged })
+    this.setState({direction})
     this.list.scrollToIndex({ index: pageRanged, animated: true })
   }
 
@@ -119,7 +120,8 @@ class HomeScreen extends React.Component {
                   width: viewportWidth - 20, 
                   height: 150,
                   alignSelf: 'center',
-                  resizeMode: 'contain'}} />
+                  resizeMode: 'contain',
+                  transform: this.state.direction === 'r2l' ? [{scaleX:1}] : [{scaleX:-1}]}} />
         </View>      
       )
 
@@ -163,10 +165,10 @@ class HomeScreen extends React.Component {
               />
               <View>
               {(this.state.page > 0 &&
-                <Button rounded small title="&lt;" onPress={() => this.setListPage(this.state.page-1)} style={{position: 'absolute', left: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
+                <Button rounded small title="&lt;" onPress={() => this.setListPage(this.state.page-1, 'l2r')} style={{position: 'absolute', left: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
               )}
               {(this.state.page < 5 &&
-                <Button rounded small title="&gt;" onPress={() => this.setListPage(this.state.page+1)} style={{position: 'absolute', right: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
+                <Button rounded small title="&gt;" onPress={() => this.setListPage(this.state.page+1, 'r2l')} style={{position: 'absolute', right: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
               )}
               </View>
               </View>
