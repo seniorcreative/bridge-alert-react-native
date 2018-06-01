@@ -67,6 +67,7 @@ class BridgeMapScreen extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     console.log("component did update bridge map", prevProps, prevState, snapshot)
     console.log("coords", this.props.Coords)
+    console.log("warnings", this.props.Warnings)
 
     if (!!this.props.Coords.length) {
       console.log("centerin on first co-ords", this.props.Coords[0])
@@ -126,7 +127,8 @@ class BridgeMapScreen extends React.Component {
           let stateProp = this.props.Bridges[this.props.AustralianState][index]
           stateProp[6] = true
           this.setState({stateProp})
-          this.setState({mapWarning: true})
+          // this.setState({mapWarning: true})
+          this.props.setMapAlertVisible(true);
           this.setState({mapWarningMessage: `${marker[5]}m to ${marker[1]} ${marker[2]}m`})
 
           // console.log("less than distance - bridge alert for mt duneed at", marker[5])
@@ -162,7 +164,8 @@ class BridgeMapScreen extends React.Component {
   }
 
   clearWarning() {
-    this.setState({mapWarning: false});
+    // this.setState({mapWarning: false});
+    this.props.setMapAlertVisible(false);
   }
 
   handleCenter = ( coord ) => {
@@ -221,8 +224,6 @@ class BridgeMapScreen extends React.Component {
     return (
     <View style={styles.container}>
       <View style={styles.welcomeContainer}>
-        <Text>{this.props.AustralianState}</Text>
-        {this.state.error ? <Text>Error: {this.state.error}</Text> : null}
         {currentLatitude && currentLongitude &&
         <MapView
           style={styles.mapStyle}
@@ -247,6 +248,7 @@ class BridgeMapScreen extends React.Component {
               />
               {!!this.props.Warnings.visible &&
               <MapView.Circle
+                key={(marker[3] + currentLatitude + currentLongitude + this.props.Warnings.radius).toString()}
                 center={{latitude: marker[3], longitude: marker[4]}} 
                 radius={this.props.Warnings.radius}
                 fillColor={'rgba(255,0,0,0.25)'}
@@ -260,7 +262,7 @@ class BridgeMapScreen extends React.Component {
           </View>)}
         </MapView>
         }
-        {this.state.mapWarning &&
+        {this.props.Warnings.mapalertvisible &&
           <TouchableOpacity onPress={() => this.clearWarning()}>
             <Image source={require('../assets/images/warning.png')} style={styles.warningImage}></Image>
             <Text style={styles.warningMessage}>{this.state.mapWarningMessage}</Text>

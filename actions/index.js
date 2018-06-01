@@ -44,3 +44,11 @@ export const setWarningVisible = (visible) => {
         payload: visible
     }
 }
+
+// The visibility of the alert on the map
+export const setMapAlertVisible = (mapalertvisible) => {
+    return {
+        type: "set_map_alert_visible",
+        payload: mapalertvisible
+    }
+}

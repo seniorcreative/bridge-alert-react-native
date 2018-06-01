@@ -15,6 +15,7 @@ import {
   Switch
 } from 'react-native';
 import { Button } from 'react-native-elements';
+import { Linking } from 'react-native'
 
 import Colors from '../constants/Colors';
 import { connect } from 'react-redux'
@@ -40,16 +41,39 @@ class SettingsScreen extends React.Component {
     this.props.setWarningVisible(value)
   }
 
+  _handleFBPress = () => {
+    Linking.openURL('https://facebook.com/bridgealert');
+  }
+
+  _handleTWPress = () => {
+    Linking.openURL('https://twitter.com/bridgealert');
+  }
+
+  _handleWebPress = () => {
+    Linking.openURL('http://bridge-alert.com');
+  }
+
+  _pickState ( auState ) {
+    this.props.setAustralianState( auState )
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 28, marginTop: 30, marginBottom: 20, fontWeight: 'bold'}}>Settings</Text>
+        <View style={styles.welcomeContainer}>
+        <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 28, marginTop: 15, marginBottom: 10, fontWeight: 'bold'}}>Settings</Text>
+        <Text style={{marginTop: 10, height: 25, alignSelf: 'center'}}>Selected State</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 75}}>
+            <Button small rounded title="VIC" onPress={() => this._pickState('VIC')} backgroundColor={(this.props.AustralianState === 'VIC') ? '#333' : '#ccc'}></Button>
+            <Button small rounded title="NSW" onPress={() => this._pickState('NSW')} backgroundColor={(this.props.AustralianState === 'NSW') ? '#333' : '#ccc'}></Button>
+            <Button small rounded title="QLD" onPress={() => this._pickState('QLD')} backgroundColor={(this.props.AustralianState === 'QLD') ? '#333' : '#ccc'}></Button>
+          </View>
         <View style={styles.switcher}>
           <Text>Show warning regions</Text>
           <Switch value={this.props.Warnings.visible} onTintColor={'#f00'} onValueChange={(value) => this._onSwitchChange(value)}/>
         </View>
         {!!this.props.Warnings.visible &&
-        <View style={{height: 200}}>
+        <View style={{height: 125}}>
           <Text style={{alignSelf: 'left', marginLeft: 10}}>Set size of warning radius (m)</Text>
           <Slider style={styles.slider} minimumTrackTintColor={'#f00'} step={1} maximumValue={750} minimumValue={50} value={100} onValueChange={(value) => this._onSliderChange(value)}/>
           <View style={styles.sliderContainer}>
@@ -58,6 +82,21 @@ class SettingsScreen extends React.Component {
             <Text>750m</Text>
           </View>
         </View>}
+        <ScrollView style={{height: 100, margin: 10}}>
+            <Text>Use this app with a co-driver, or plan your journey ahead. Do not use apps while driving. We currently only have data for VIC, QLD and NSW.</Text>
+        </ScrollView>
+        <View style={styles.socialIconContainer}>
+          <TouchableOpacity onPress={this._handleFBPress} >
+            <Image source={require('../assets/images/social-facebook.png')} style={styles.socialIcon}></Image>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this._handleTWPress} >
+            <Image source={require('../assets/images/social-twitter.png')} style={styles.socialIcon}></Image>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this._handleWebPress} >
+            <Text>&copy;{new Date().getFullYear()} bridge-alert.com</Text>
+          </TouchableOpacity>
+        </View>
+        </View>
       </View>
     )
   }
@@ -107,5 +146,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: 10,
     marginBottom: 20
+  },
+  socialIconContainer: {
+    fleX: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  socialIcon: {
+    width: 32,
+    height: 32,
+    margin: 10
   }
 })

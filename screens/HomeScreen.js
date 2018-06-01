@@ -131,22 +131,12 @@ class HomeScreen extends React.Component {
     this.props.navigation.navigate('BridgeMap')
   }
 
-  _pickState ( auState ) {
-    console.log("pick state", auState )
-    this.props.setAustralianState( auState )
-  
-  }
-
   render() {
     return (
       <View style={styles.container}>
           <View style={styles.welcomeContainer}>
-            <Text style={{marginTop: 10, height: 25}}>Choose a State</Text>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', height: 25}}>
-              <Button small rounded title="VIC" onPress={() => this._pickState('VIC')} backgroundColor={(this.props.AustralianState === 'VIC') ? '#333' : '#ccc'}></Button>
-              <Button small rounded title="NSW" onPress={() => this._pickState('NSW')} backgroundColor={(this.props.AustralianState === 'NSW') ? '#333' : '#ccc'}></Button>
-              <Button small rounded title="QLD" onPress={() => this._pickState('QLD')} backgroundColor={(this.props.AustralianState === 'QLD') ? '#333' : '#ccc'}></Button>
-            </View>
+            <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 28, marginTop: 20, marginBottom: 0, fontWeight: 'bold'}}>Set Vehicle Height</Text>
+            <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 18, marginTop: 10, marginBottom: 0, }}>Swipe for more vehicles</Text>
             <View style={{width: viewportWidth}}>
               <FlatList
                 data={this.props.Vehicles}
@@ -159,6 +149,12 @@ class HomeScreen extends React.Component {
                 renderItem={this._renderVehicle}
                 extraData={this.state}
                 ref={list => {this.list = list}}
+                onScroll={(event) => {
+                  var currentOffset = event.nativeEvent.contentOffset.x
+                  var direction = currentOffset > this.offset ? 'r2l' : 'l2r';
+                  this.offset = currentOffset;
+                  this.setState({direction});
+                }}
                 getItemLayout={(data, index) => (
                   {length: sliderWidth, offset: sliderWidth * index, index}
                 )}

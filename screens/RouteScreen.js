@@ -94,7 +94,8 @@ class RouteScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <View style={{width: '90%', height: 300, marginTop: 20, marginBottom: 20}}>
+          <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 28, marginTop: 15, marginBottom: 10, fontWeight: 'bold'}}>Route</Text>
+          <View style={{width: '90%', height: 275, marginTop: 0, marginBottom: 20}}>
             <Text>Enter a start location</Text>
             <GooglePlacesAutocomplete
               placeholder='Start location'
@@ -152,7 +153,7 @@ class RouteScreen extends React.Component {
                 marginBottom: 20
               }}
               
-              currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+              currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
               currentLocationLabel="Current location"
               // nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
               // GoogleReverseGeocodingQuery={{
@@ -183,7 +184,7 @@ class RouteScreen extends React.Component {
               renderDescription={row => row.description} // custom description render
               ref={endAddress => {this.endAddress = endAddress}}
               onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                console.log("end", data, details.geometry.location)
+                // console.log("end", data, details.geometry.location)
                 this.setState({
                   endAddress: data.description,
                   endLocation: details.geometry.location
@@ -235,7 +236,7 @@ class RouteScreen extends React.Component {
             />
           </View>
           <Button medium rounded title="Start My Route" onPress={() => this.showRouteOnMap()} disabled={this.state.startAddress === '' || this.state.endAddress === ''} color={'#fff'} backgroundColor={'#f00'}></Button>
-          <TouchableOpacity onPress={() => this.resetRoute()}>
+          <TouchableOpacity onPress={() => this.resetRoute()} disabled={this.state.startAddress === '' || this.state.endAddress === ''}>
             <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Clear Route</Text>
           </TouchableOpacity>
         </View>
