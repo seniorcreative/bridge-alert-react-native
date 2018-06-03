@@ -104,15 +104,16 @@ class RouteScreen extends React.Component {
               returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
               listViewDisplayed='auto'    // true/false/undefined
               fetchDetails={true}
-              renderDescription={row => row.description} // custom description render
+              // renderDescription={row => row.description} // custom description render
+              renderDescription={row => row.description || row.formatted_address || row.name}
               ref={startAddress => {this.startAddress = startAddress}}
               onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                // console.log("start addy", data, details);
+                console.log("start addy", data, details);
                 for (let a in details.address_components) {
                   const { types } = details.address_components[a], stateKey = 'administrative_area_level_1'
-                  // console.log('types', types)
+                  console.log('types', types)
                   if (types.indexOf(stateKey) !== -1) {
-                    // console.log("State is ", details.address_components[a].short_name)
+                    console.log("State is ", details.address_components[a].short_name)
                     this.props.setAustralianState( details.address_components[a].short_name )
                   }
                 }
@@ -155,7 +156,7 @@ class RouteScreen extends React.Component {
               
               currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
               currentLocationLabel="Current location"
-              // nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+              nearbyPlacesAPI='GoogleReverseGeocoding' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
               // GoogleReverseGeocodingQuery={{
               //   // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
               // }}

@@ -29,7 +29,7 @@ function wp (percentage) {
   return Math.round(value);
 }
 
-const slideHeight = viewportHeight * 0.4;
+const slideHeight = viewportHeight * 0.25;
 const slideWidth = wp(75);
 const itemHorizontalMargin = wp(2);
 export const sliderWidth = viewportWidth;
@@ -135,14 +135,14 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
           <View style={styles.welcomeContainer}>
-            <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 28, marginTop: 20, marginBottom: 0, fontWeight: 'bold'}}>Set Vehicle Height</Text>
-            <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 18, marginTop: 10, marginBottom: 0, }}>Swipe for more vehicles</Text>
+            <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 25, marginTop: 10, marginBottom: 0, fontWeight: 'bold'}}>Set Vehicle Height</Text>
+            <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 18, marginTop: 5, marginBottom: 0, }}>Swipe for more vehicles</Text>
             <View style={{width: viewportWidth}}>
               <FlatList
                 data={this.props.Vehicles}
                 maxSwipeDistance={viewportWidth}
                 horizontal={true}
-                style={{padding: 0, width: viewportWidth, height: 220, marginTop: 20}}
+                style={{padding: 0, width: viewportWidth, height: 185, marginTop: 0}}
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={false}
                 onMomentumScrollEnd={this._onScrollEnd}
@@ -159,14 +159,14 @@ class HomeScreen extends React.Component {
                   {length: sliderWidth, offset: sliderWidth * index, index}
                 )}
               />
-              <View>
-              {(this.state.page > 0 &&
+              {/* <View>
+              {(this.state.page > 100 &&
                 <Button rounded small title="&lt;" onPress={() => this.setListPage(this.state.page-1, 'l2r')} style={{position: 'absolute', left: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
               )}
-              {(this.state.page < 5 &&
+              {(this.state.page < 0 &&
                 <Button rounded small title="&gt;" onPress={() => this.setListPage(this.state.page+1, 'r2l')} style={{position: 'absolute', right: -8, top: -125, fontSize: 16}} color={'#333'} backgroundColor={'#deaf00'}></Button>
               )}
-              </View>
+              </View> */}
               </View>
             <Text style={{alignSelf: 'center', color: Colors.red, fontSize: 28, fontWeight: 'bold'}}>{this.state.currentItemName}</Text>
             <View style={{width: viewportWidth * 0.75,  flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -176,7 +176,7 @@ class HomeScreen extends React.Component {
             </View>
             <Button onPress={() => this._startJourney()} medium rounded title="Start" style={{alignSelf: 'center', marginTop: 12, width: '66%'}} color={'#fff'} backgroundColor={'#f00'}></Button>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Routes')}>
-              <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Plan My Route</Text>
+              <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 6 }}>Plan My Route</Text>
             </TouchableOpacity>
           </View>
       </View>
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
   welcomeContainer: {
     alignItems: 'center',
     marginTop: 0,
-    marginBottom: 20,
+    marginBottom: 10,
 
   },
   image: {

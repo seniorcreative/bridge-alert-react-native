@@ -109,27 +109,27 @@ class BridgeMapScreen extends React.Component {
     //   this.map.fitToCoordinates([this.props.Coords[0], this.props.Coords[this.props.Coords.length-1]], { edgePadding: DEFAULT_PADDING, animated: true })
     // }
 
-    if (!this.props.Bridges[this.props.AustralianState]) return;
-    this.props.Bridges[this.props.AustralianState].map((marker, index) => {
+    // if (!this.props.Bridges[this.props.AustralianState]) return;
+    this.props.Bridges.map((marker, index) => {
         const end = {
-          latitude: marker[3],
-          longitude: marker[4]
+          latitude: marker[4],
+          longitude: marker[5]
         }
         // console.log(haversine(start, end, {threshold: 1, unit: 'meter'}))
         // console.log("Metres to", marker[1], haversine(start, end, {unit: 'meter'}))
-        marker[5] = Math.round(haversine(start, end, {unit: 'meter'}))
+        marker[6] = Math.round(haversine(start, end, {unit: 'meter'}))
         // if (+marker[5] < 8750 && !marker[6]) {
           // if (+marker[5] < 2000 && this.state.alerts.length < 1) {
 
           // Check if we are near to a bridge.
-          if (+marker[5] < this.props.Warnings.radius && marker[6] === false) {
+          if (+marker[6] < this.props.Warnings.radius && marker[7] === false) {
           
-          let stateProp = this.props.Bridges[this.props.AustralianState][index]
+          let stateProp = this.props.Bridges[index]
           stateProp[6] = true
           this.setState({stateProp})
           // this.setState({mapWarning: true})
           this.props.setMapAlertVisible(true);
-          this.setState({mapWarningMessage: `${marker[5]}m to ${marker[1]} ${marker[2]}m`})
+          this.setState({mapWarningMessage: `${marker[6]}m to ${marker[1]} ${marker[3]}m`})
 
           // console.log("less than distance - bridge alert for mt duneed at", marker[5])
           const localNotification = {
@@ -237,22 +237,16 @@ class BridgeMapScreen extends React.Component {
           followUserLocation={true}
           onLayout={this.onMapLayout}
           ref={map => {this.map = map}}
+          key={this.props.VehicleHeight}
         >
-          {this.state.isMapReady && this.props.Bridges[this.props.AustralianState].map(marker => (
+          {this.state.isMapReady && this.props.Bridges.map(marker => (
             <View>
+              {marker[3] <= (this.props.VehicleHeight / 10) &&
               <MapView.Marker
                 key={marker[0]}
-                coordinate={{latitude: marker[3], longitude: marker[4]}}
-                title={`${marker[1]} ${marker[2]}m`}
+                coordinate={{latitude: marker[4], longitude: marker[5]}}
+                title={`${marker[1]} ${marker[3]}m`}
                 pinColor={"#000000"}
-              />
-              {!!this.props.Warnings.visible &&
-              <MapView.Circle
-                key={(marker[3] + currentLatitude + currentLongitude + this.props.Warnings.radius).toString()}
-                center={{latitude: marker[3], longitude: marker[4]}} 
-                radius={this.props.Warnings.radius}
-                fillColor={'rgba(255,0,0,0.25)'}
-                strokeColor={'rgba(255,0,0,0.0)'}
               />
               }
             </View>
@@ -335,7 +329,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     top: height - 192,
-    left: 10,
+    left: 25,
     borderRadius: 10
   },
   heightTabText: {

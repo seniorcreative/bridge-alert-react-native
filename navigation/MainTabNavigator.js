@@ -8,7 +8,7 @@ import Colors from '../constants/Colors';
 import HomeScreen from '../screens/HomeScreen';
 import BridgeMapScreen from '../screens/BridgeMapScreen';
 import RouteScreen from '../screens/RouteScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+// import SettingsScreen from '../screens/SettingsScreen';
 
 export default TabNavigator(
   {
@@ -20,10 +20,10 @@ export default TabNavigator(
     },
     Routes: {
       screen: RouteScreen,
-    },
-    Settings: {
-      screen: SettingsScreen,
-    },
+    }
+    // Settings: {
+    //   screen: SettingsScreen,
+    // },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -43,9 +43,9 @@ export default TabNavigator(
           case 'Routes':
             iconName = Platform.OS === 'ios' ? `ios-map${focused ? '' : '-outline'}` : 'md-map';
             break;
-          case 'Settings':
-            iconName =
-              Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options';
+          // case 'Settings':
+          //   iconName =
+          //     Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options';
         }
         return (
           <Ionicons
