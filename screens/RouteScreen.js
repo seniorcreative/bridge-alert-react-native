@@ -94,8 +94,8 @@ class RouteScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.welcomeContainer}>
-          <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 28, marginTop: 15, marginBottom: 10, fontWeight: 'bold'}}>Route</Text>
-          <View style={{width: '90%', height: 275, marginTop: 0, marginBottom: 20}}>
+          {/* <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 28, marginTop: 15, marginBottom: 10, fontWeight: 'bold'}}>Route</Text> */}
+          <View style={{width: '90%', height: 275, marginTop: 15, marginBottom: 20}}>
             <Text>Enter a start location</Text>
             <GooglePlacesAutocomplete
               placeholder='Start location'
@@ -108,12 +108,12 @@ class RouteScreen extends React.Component {
               renderDescription={row => row.description || row.formatted_address || row.name}
               ref={startAddress => {this.startAddress = startAddress}}
               onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                console.log("start addy", data, details);
+                // console.log("start addy", data, details);
                 for (let a in details.address_components) {
                   const { types } = details.address_components[a], stateKey = 'administrative_area_level_1'
-                  console.log('types', types)
+                  // console.log('types', types)
                   if (types.indexOf(stateKey) !== -1) {
-                    console.log("State is ", details.address_components[a].short_name)
+                    // console.log("State is ", details.address_components[a].short_name)
                     this.props.setAustralianState( details.address_components[a].short_name )
                   }
                 }
@@ -129,7 +129,7 @@ class RouteScreen extends React.Component {
                 // available options: https://developers.google.com/places/web-service/autocomplete
                 key: PLACES_KEY,
                 language: 'en', // language of the results
-                components: 'country:au'
+                components: 'country:au' // Only Australia
                 // types: '(cities)' // default: 'geocode'
               }}
               
@@ -155,7 +155,7 @@ class RouteScreen extends React.Component {
               }}
               
               currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-              currentLocationLabel="Current location"
+              currentLocationLabel="Use current location"
               nearbyPlacesAPI='GoogleReverseGeocoding' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
               // GoogleReverseGeocodingQuery={{
               //   // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
@@ -236,7 +236,7 @@ class RouteScreen extends React.Component {
               // renderRightButton={() => <Text>Custom text after the input</Text>}
             />
           </View>
-          <Button medium rounded title="Start My Route" onPress={() => this.showRouteOnMap()} disabled={this.state.startAddress === '' || this.state.endAddress === ''} color={'#fff'} backgroundColor={'#f00'}></Button>
+          <Button medium rounded title="Show Route on Bridge Map" onPress={() => this.showRouteOnMap()} disabled={this.state.startAddress === '' || this.state.endAddress === ''} color={'#fff'} backgroundColor={'#f00'}></Button>
           <TouchableOpacity onPress={() => this.resetRoute()} disabled={this.state.startAddress === '' || this.state.endAddress === ''}>
             <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Clear Route</Text>
           </TouchableOpacity>

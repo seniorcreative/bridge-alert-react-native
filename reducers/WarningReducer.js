@@ -1,5 +1,5 @@
 const INITIAL_STATE = { 
-    visible: true, 
+    visible: false, 
     radius: 250, 
     mapalertvisible: false }
 

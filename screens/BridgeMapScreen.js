@@ -125,11 +125,11 @@ class BridgeMapScreen extends React.Component {
           if (+marker[6] < this.props.Warnings.radius && marker[7] === false) {
           
           let stateProp = this.props.Bridges[index]
-          stateProp[6] = true
+          stateProp[7] = true
           this.setState({stateProp})
           // this.setState({mapWarning: true})
-          this.props.setMapAlertVisible(true);
-          this.setState({mapWarningMessage: `${marker[6]}m to ${marker[1]} ${marker[3]}m`})
+          this.props.setMapAlertVisible(true)
+          this.setState({mapWarningMessage: `You are ${marker[6]}m away from\n${marker[1]} [${marker[3]}m]`})
 
           // console.log("less than distance - bridge alert for mt duneed at", marker[5])
           const localNotification = {
@@ -138,12 +138,11 @@ class BridgeMapScreen extends React.Component {
             ios: {
               sound: true,
               vibrate: true
+            },
+            android: {
+              sound: true,
+              vibrate: true
             }
-            // },
-            // android: {
-            //   sound: true,
-            //   vibrate: true
-            // }
           } //, ios: {sound: true, vibrate: true}, android: {sound: true, vibrate: true}}
 
           let t = new Date().getTime() + 5000;
@@ -321,7 +320,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   heightTab: {
-    width: 75, 
+    width: 58, 
     height: 55,
     backgroundColor: '#111111', 
     justifyContent: 'center',
@@ -329,7 +328,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     top: height - 192,
-    left: 25,
+    left: 32,
     borderRadius: 10
   },
   heightTabText: {
@@ -349,7 +348,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       backgroundColor: '#acacac',
       textAlign: 'center',
-      top: height - 188,
+      top: height - 182,
       fontWeight: 'bold',
       zIndex: 1,
       fontSize: 14,

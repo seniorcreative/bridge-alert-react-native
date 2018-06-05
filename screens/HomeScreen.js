@@ -114,11 +114,11 @@ class HomeScreen extends React.Component {
       return (
         <View>
           <Image source={vehicleImages[item.key - 1]} 
-          style={{marginTop: 30,
-                  marginLeft: 10,
-                  marginRight: 10, 
-                  width: viewportWidth - 20, 
-                  height: 150,
+          style={{marginTop: 10,
+                  marginLeft: 20,
+                  marginRight: 20, 
+                  width: viewportWidth - 40, 
+                  height: 120,
                   alignSelf: 'center',
                   resizeMode: 'contain',
                   transform: this.state.direction === 'r2l' ? [{scaleX:1}] : [{scaleX:-1}]}} />
@@ -142,7 +142,7 @@ class HomeScreen extends React.Component {
                 data={this.props.Vehicles}
                 maxSwipeDistance={viewportWidth}
                 horizontal={true}
-                style={{padding: 0, width: viewportWidth, height: 185, marginTop: 0}}
+                style={{padding: 0, width: viewportWidth, height: 150, marginTop: 0}}
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={false}
                 onMomentumScrollEnd={this._onScrollEnd}
@@ -170,11 +170,11 @@ class HomeScreen extends React.Component {
               </View>
             <Text style={{alignSelf: 'center', color: Colors.red, fontSize: 28, fontWeight: 'bold'}}>{this.state.currentItemName}</Text>
             <View style={{width: viewportWidth * 0.75,  flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-              <Button medium rounded title=" - " onPress={this._onHeightDn} fontSize={30} color={'#000'} backgroundColor={'#fff'}></Button>
+              <Button medium rounded title=" - " onPress={this._onHeightDn} fontSize={28} color={'#000'} backgroundColor={'#fff'}></Button>
               <Text style={{fontSize: 20}}>{this.props.VehicleHeight/10.0}{'m'}</Text>
-              <Button medium rounded title=" + " onPress={this._onHeightUp} fontSize={30} color={'#000'} backgroundColor={'#fff'}></Button>
+              <Button medium rounded title=" + " onPress={this._onHeightUp} fontSize={28} color={'#000'} backgroundColor={'#fff'}></Button>
             </View>
-            <Button onPress={() => this._startJourney()} medium rounded title="Start" style={{alignSelf: 'center', marginTop: 12, width: '66%'}} color={'#fff'} backgroundColor={'#f00'}></Button>
+            <Button onPress={() => this._startJourney()} medium rounded title="Start" style={{alignSelf: 'center', marginTop: 0, width: '66%'}} color={'#fff'} backgroundColor={'#f00'}></Button>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Routes')}>
               <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 6 }}>Plan My Route</Text>
             </TouchableOpacity>
