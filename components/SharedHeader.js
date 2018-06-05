@@ -10,9 +10,11 @@ const SharedHeader = (props) => {
   return (
     <View>
       {props.Warnings.mapalertvisible && 
-      (<Image source={require('../assets/images/Warning-Yellow.png')} style={warningHeaderImage} />)
+      (<Image source={require('../assets/images/bridge-alert-warning.png')} style={headerStyle} />)
       }
+      {!props.Warnings.mapalertvisible && 
       <Image source={require('../assets/images/bridge-alert-logo-rn.png')} style={headerStyle} />
+      }
     </View>
   )
 }
