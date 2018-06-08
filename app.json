@@ -16,7 +16,12 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.seniorcreative.bridgealert"
+      "bundleIdentifier": "com.seniorcreative.bridgealert",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Bridge Alert displays your current location on the Bridge Map and uses it to calculate proximity to Low Clearance Bridges.",
+        "NSLocationUsageDescription": "Bridge Alert displays your current location on the Bridge Map and uses it to calculate proximity to Low Clearance Bridges.",
+        "NSLocationAlwaysUsageDescription": "Bridge Alert displays your current location on the Bridge Map and uses it to calculate proximity to Low Clearance Bridges."
+      }
     },
     "android": {
       "package": "com.seniorcreative.bridgealert"
