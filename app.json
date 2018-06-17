@@ -6,7 +6,7 @@
     "privacy": "unlisted",
     "sdkVersion": "24.0.0",
     "platforms": ["ios", "android"],
-    "version": "2.0.0",
+    "version": "2.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png",
     "splash": {
@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.seniorcreative.bridgealert",
-      "buildNumber": "2",
+      "buildNumber": "3",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Bridge Alert displays your current location on the Bridge Map and uses it to calculate proximity to Low Clearance Bridges.",
         "NSLocationUsageDescription": "Bridge Alert displays your current location on the Bridge Map and uses it to calculate proximity to Low Clearance Bridges.",
@@ -26,7 +26,7 @@
     },
     "android": {
       "package": "com.seniorcreative.bridgealert",
-      "versionCode": 1
+      "versionCode": 2
     }
   }
 }

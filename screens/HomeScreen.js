@@ -14,6 +14,11 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { WebBrowser } from 'expo';
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  AdMobRewarded
+} from "expo";
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -34,6 +39,7 @@ const slideWidth = wp(75);
 const itemHorizontalMargin = wp(2);
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
+const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // LIVE ID
 
 
 const vehicleImages = [
@@ -44,6 +50,7 @@ const vehicleImages = [
   require(`../assets/images/vehicles/vehicle-5.png`),
   require(`../assets/images/vehicles/vehicle-6.png`),
 ]
+
 
 
 class HomeScreen extends React.Component {
@@ -72,8 +79,39 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     // this.list.getItemLayout = () => {
-      setTimeout(() => {this.setListPage(1)}, 200)
+    setTimeout(() => {this.setListPage(1)}, 500)
     // }
+    AdMobInterstitial.setTestDeviceID("EMULATOR");
+    // ALWAYS USE TEST ID for Admob ads
+    AdMobInterstitial.setAdUnitID("ca-app-pub3940256099942544/1033173712");
+    AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
+      console.log("interstitialDidLoad")
+    );
+    AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
+      console.log("interstitialDidFailToLoad")
+    );
+    AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
+      console.log("interstitialDidOpen")
+    );
+    AdMobInterstitial.addEventListener("interstitialDidClose", () =>
+      console.log("interstitialDidClose")
+    );
+    AdMobInterstitial.addEventListener("interstitialWillLeaveApplication", () =>
+      console.log("interstitialWillLeaveApplication")
+    );
+  }
+
+  componentWillUnmount() {
+    AdMobInterstitial.removeAllListeners();
+  }
+
+  bannerError() {
+    console.log("An error");
+    return;
+  }
+
+  showInterstitial() {
+    AdMobInterstitial.requestAd(() => AdMobInterstitial.showAd());
   }
 
   _onScrollEnd(e) {
@@ -179,6 +217,14 @@ class HomeScreen extends React.Component {
               <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 6 }}>Plan My Route</Text>
             </TouchableOpacity>
           </View>
+          <AdMobBanner
+            style={styles.bottomBanner}
+            bannerSize="fullBanner"
+            adUnitID="ca-app-pub-3940256099942544/6300978111"
+            // Test ID, Replace with your-admob-unit-id
+            testDeviceID="EMULATOR"
+            didFailToReceiveAdWithError={this.bannerError}
+          />
       </View>
     );
   }
@@ -254,5 +300,14 @@ const styles = StyleSheet.create({
   image: {
     width: viewportWidth,
     flex: 1
+  },
+  topBanner: {
+    position: "absolute",
+    top: 0,
+    width: viewportWidth
+  },
+  bottomBanner: {
+    position: "absolute",
+    bottom: 0
   }
 })

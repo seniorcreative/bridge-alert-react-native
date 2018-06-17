@@ -9,8 +9,6 @@ import reducers from './reducers';
 //
 import SharedHeader from './components/SharedHeader';
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
-
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
@@ -66,15 +64,12 @@ export default class App extends React.Component {
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   };
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fc0',
-  },
-  // statusBarUnderlay: {
-    // height: 25,
-    // backgroundColor: 'rgba(0,0,0,0.2)',
-  // }
+  }
 });
