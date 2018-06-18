@@ -9,6 +9,10 @@ import {
   TouchableOpacity
 } from 'react-native'
 import { Constants, Location, Permissions, Notifications } from 'expo'
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+} from "expo";
 
 import MapView from 'react-native-maps'
 import Polyline from '@mapbox/polyline'
@@ -22,6 +26,10 @@ import Colors from '../constants/Colors'
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
+const AD_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111'; // TEST ID
+// const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // LIVE ID
+const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
+// const AD_DEVICE_ID = 'APP'; // LIVE DEVICE ID
 
 // const BRIDGE_WARNING_DISTANCE = 500
 const DEFAULT_PADDING = { top: 25, right: 25, bottom: 25, left: 25 }
@@ -59,18 +67,39 @@ class BridgeMapScreen extends React.Component {
 
         // console.log("notifications permissions", Permissions.getAsync(Permissions.NOTIFICATIONS))
     // console.log("location permissions", Permissions.getAsync(Permissions.LOCATION))
-    this._alertIfRemoteNotificationsDisabledAsync()
-    this._grantLocationPermission()
+    this._alertIfRemoteNotificationsDisabledAsync();
+    this._grantLocationPermission();
+
+
+    // }
+    AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
+    // ALWAYS USE TEST ID for Admob ads
+    AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
+    AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
+      console.log("interstitialDidLoad")
+    );
+    AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
+      console.log("interstitialDidFailToLoad")
+    );
+    AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
+      console.log("interstitialDidOpen")
+    );
+    AdMobInterstitial.addEventListener("interstitialDidClose", () =>
+      console.log("interstitialDidClose")
+    );
+    AdMobInterstitial.addEventListener("interstitialWillLeaveApplication", () =>
+      console.log("interstitialWillLeaveApplication")
+    );
 
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("component did update bridge map", prevProps, prevState, snapshot)
-    console.log("coords", this.props.Coords)
-    console.log("warnings", this.props.Warnings)
+    // console.log("component did update bridge map", prevProps, prevState, snapshot)
+    // console.log("coords", this.props.Coords)
+    // console.log("warnings", this.props.Warnings)
 
     if (!!this.props.Coords.length) {
-      console.log("centerin on first co-ords", this.props.Coords[0])
+      // console.log("centerin on first co-ords", this.props.Coords[0])
       // this.handleCenter(this.props.Coords[0])
       this.map.fitToCoordinates([this.props.Coords[0], this.props.Coords[this.props.Coords.length-1]], { edgePadding: DEFAULT_PADDING, animated: true })
     }
@@ -91,6 +120,16 @@ class BridgeMapScreen extends React.Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
+    AdMobInterstitial.removeAllListeners();
+  }
+
+  bannerError() {
+    console.log("An error");
+    return;
+  }
+
+  showInterstitial() {
+    AdMobInterstitial.requestAd(() => AdMobInterstitial.showAd());
   }
 
   checkDistanceFromBridges = (start) => {
@@ -268,6 +307,14 @@ class BridgeMapScreen extends React.Component {
           <Image source={require('../assets/images/Assets.xcassets/icon-center.imageset/center-icon-75.png')} style={styles.iconCenterImage}></Image>
         </TouchableOpacity>
       </View>
+      <AdMobBanner
+            style={styles.bottomBanner}
+            bannerSize="fullBanner"
+            adUnitID={AD_UNIT_ID}
+            // Test ID, Replace with your-admob-unit-id
+            testDeviceID={AD_DEVICE_ID}
+            didFailToReceiveAdWithError={this.bannerError}
+        />
     </View>
     )
   }
@@ -363,5 +410,9 @@ const styles = StyleSheet.create({
   iconCenterImage: {
     width: 24,
     height: 24
+  },
+  bottomBanner: {
+    position: "absolute",
+    bottom: 0
   }
 })

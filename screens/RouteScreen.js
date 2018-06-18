@@ -12,6 +12,10 @@ import {
   View,
   Dimensions,
 } from 'react-native'
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+} from "expo";
 import Polyline from '@mapbox/polyline'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
@@ -31,6 +35,10 @@ import Colors from '../constants/Colors'
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
+const AD_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111'; // TEST ID
+// const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // LIVE ID
+const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
+// const AD_DEVICE_ID = 'APP'; // LIVE DEVICE ID
 
 class RouteScreen extends React.Component {
 
@@ -88,6 +96,36 @@ class RouteScreen extends React.Component {
     this.startAddress.setAddressText('')
     this.endAddress.setAddressText('')
     this.props.setCoords({coords: []})
+  }
+
+  componentDidMount() {
+    AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
+    // ALWAYS USE TEST ID for Admob ads
+    AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
+    AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
+      console.log("interstitialDidLoad")
+    );
+    AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
+      console.log("interstitialDidFailToLoad")
+    );
+    AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
+      console.log("interstitialDidOpen")
+    );
+    AdMobInterstitial.addEventListener("interstitialDidClose", () =>
+      console.log("interstitialDidClose")
+    );
+    AdMobInterstitial.addEventListener("interstitialWillLeaveApplication", () =>
+      console.log("interstitialWillLeaveApplication")
+    );
+  }
+
+  componentWillUnmount() {
+    AdMobInterstitial.removeAllListeners();
+  }
+
+  bannerError() {
+    console.log("An error");
+    return;
   }
 
   render() {
@@ -241,6 +279,14 @@ class RouteScreen extends React.Component {
             <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Clear Route</Text>
           </TouchableOpacity>
         </View>
+        <AdMobBanner
+            style={styles.bottomBanner}
+            bannerSize="fullBanner"
+            adUnitID={AD_UNIT_ID}
+            // Test ID, Replace with your-admob-unit-id
+            testDeviceID={AD_DEVICE_ID}
+            didFailToReceiveAdWithError={this.bannerError}
+        />
       </View>
     )
   }
@@ -282,5 +328,9 @@ const styles = StyleSheet.create({
   image: {
     width: viewportWidth,
     flex: 1
+  },
+  bottomBanner: {
+    position: "absolute",
+    bottom: 0
   }
 })

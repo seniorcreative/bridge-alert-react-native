@@ -17,7 +17,6 @@ import { WebBrowser } from 'expo';
 import {
   AdMobBanner,
   AdMobInterstitial,
-  AdMobRewarded
 } from "expo";
 
 import { connect } from 'react-redux';
@@ -39,8 +38,10 @@ const slideWidth = wp(75);
 const itemHorizontalMargin = wp(2);
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
-const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // LIVE ID
-
+const AD_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111'; // TEST ID
+// const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // LIVE ID
+const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
+// const AD_DEVICE_ID = 'APP'; // LIVE DEVICE ID
 
 const vehicleImages = [
   require(`../assets/images/vehicles/vehicle-1.png`),
@@ -50,8 +51,6 @@ const vehicleImages = [
   require(`../assets/images/vehicles/vehicle-5.png`),
   require(`../assets/images/vehicles/vehicle-6.png`),
 ]
-
-
 
 class HomeScreen extends React.Component {
 
@@ -81,9 +80,9 @@ class HomeScreen extends React.Component {
     // this.list.getItemLayout = () => {
     setTimeout(() => {this.setListPage(1)}, 500)
     // }
-    AdMobInterstitial.setTestDeviceID("EMULATOR");
+    AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
     // ALWAYS USE TEST ID for Admob ads
-    AdMobInterstitial.setAdUnitID("ca-app-pub3940256099942544/1033173712");
+    AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
     AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
       console.log("interstitialDidLoad")
     );
@@ -220,9 +219,9 @@ class HomeScreen extends React.Component {
           <AdMobBanner
             style={styles.bottomBanner}
             bannerSize="fullBanner"
-            adUnitID="ca-app-pub-3940256099942544/6300978111"
+            adUnitID={AD_UNIT_ID}
             // Test ID, Replace with your-admob-unit-id
-            testDeviceID="EMULATOR"
+            testDeviceID={AD_DEVICE_ID}
             didFailToReceiveAdWithError={this.bannerError}
           />
       </View>
@@ -300,11 +299,6 @@ const styles = StyleSheet.create({
   image: {
     width: viewportWidth,
     flex: 1
-  },
-  topBanner: {
-    position: "absolute",
-    top: 0,
-    width: viewportWidth
   },
   bottomBanner: {
     position: "absolute",
