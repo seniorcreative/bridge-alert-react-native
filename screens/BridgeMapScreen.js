@@ -309,7 +309,7 @@ class BridgeMapScreen extends React.Component {
       </View>
       <AdMobBanner
             style={styles.bottomBanner}
-            bannerSize="fullBanner"
+            bannerSize="smartBannerPortrait"
             adUnitID={AD_UNIT_ID}
             // Test ID, Replace with your-admob-unit-id
             testDeviceID={AD_DEVICE_ID}
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     position: 'absolute',
-    top: height - 192,
+    top: height - 192 - 48,
     left: 32,
     borderRadius: 10
   },

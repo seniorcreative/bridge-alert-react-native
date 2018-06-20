@@ -218,7 +218,7 @@ class HomeScreen extends React.Component {
           </View>
           <AdMobBanner
             style={styles.bottomBanner}
-            bannerSize="fullBanner"
+            bannerSize="smartBannerPortrait"
             adUnitID={AD_UNIT_ID}
             // Test ID, Replace with your-admob-unit-id
             testDeviceID={AD_DEVICE_ID}
