@@ -39,7 +39,7 @@ const itemHorizontalMargin = wp(2);
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 // const AD_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111'; // TEST ID
-const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // LIVE ID
+const AD_UNIT_ID = 'ca-app-pub-5368979163797748/1999912385'; // HOME SCREEN ID
 const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
 // const AD_DEVICE_ID = 'APP'; // LIVE DEVICE ID
 
@@ -78,11 +78,11 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     // this.list.getItemLayout = () => {
-    setTimeout(() => {this.setListPage(1)}, 500)
+    // setTimeout(() => {this.setListPage(1)}, 500)
     // }
     AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
     // ALWAYS USE TEST ID for Admob ads
-    AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
+    // AdMobInterstitial.setAdUnitID(AD_UNIT_ID); // Getting warnings for setting this twice...
     AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
       console.log("interstitialDidLoad")
     );
@@ -171,6 +171,14 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+          <AdMobBanner
+            style={styles.topBanner}
+            bannerSize="smartBannerPortrait"
+            adUnitID={AD_UNIT_ID}
+            // Test ID, Replace with your-admob-unit-id
+            testDeviceID={AD_DEVICE_ID}
+            didFailToReceiveAdWithError={this.bannerError}
+          />
           <View style={styles.welcomeContainer}>
             <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 25, marginTop: 10, marginBottom: 0, fontWeight: 'bold'}}>Set Vehicle Height</Text>
             <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 18, marginTop: 5, marginBottom: 0, }}>Swipe for more vehicles</Text>
@@ -195,6 +203,7 @@ class HomeScreen extends React.Component {
                 getItemLayout={(data, index) => (
                   {length: sliderWidth, offset: sliderWidth * index, index}
                 )}
+                keyExtractor={(item) => item.key.toString() }
               />
               {/* <View>
               {(this.state.page > 100 &&
@@ -216,14 +225,6 @@ class HomeScreen extends React.Component {
               <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 6 }}>Plan My Route</Text>
             </TouchableOpacity>
           </View>
-          <AdMobBanner
-            style={styles.bottomBanner}
-            bannerSize="smartBannerPortrait"
-            adUnitID={AD_UNIT_ID}
-            // Test ID, Replace with your-admob-unit-id
-            testDeviceID={AD_DEVICE_ID}
-            didFailToReceiveAdWithError={this.bannerError}
-          />
       </View>
     );
   }
@@ -292,9 +293,8 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 0,
+    marginTop: 40,
     marginBottom: 10,
-
   },
   image: {
     width: viewportWidth,
@@ -303,5 +303,9 @@ const styles = StyleSheet.create({
   bottomBanner: {
     position: "absolute",
     bottom: 0
+  },
+  topBanner: {
+    position: "absolute",
+    top: 0
   }
 })

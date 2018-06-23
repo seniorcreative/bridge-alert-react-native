@@ -12,9 +12,9 @@ import { Constants, Location, Permissions, Notifications } from 'expo'
 import {
   AdMobBanner,
   AdMobInterstitial,
+  MapView
 } from "expo";
-
-import MapView from 'react-native-maps'
+// import MapView from 'react-native-maps'
 import Polyline from '@mapbox/polyline'
 import haversine from 'haversine'
 
@@ -27,7 +27,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 // const AD_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111'; // TEST ID
-const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // LIVE ID
+const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // MAP SCREEN ID
 const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
 // const AD_DEVICE_ID = 'APP'; // LIVE DEVICE ID
 
@@ -74,7 +74,7 @@ class BridgeMapScreen extends React.Component {
     // }
     AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
     // ALWAYS USE TEST ID for Admob ads
-    AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
+    // AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
     AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
       console.log("interstitialDidLoad")
     );
@@ -252,17 +252,22 @@ class BridgeMapScreen extends React.Component {
   }
 
   render() {
-
     // console.log("bridge map render call")
-
     const currentLatitude = this.state.latitude
     const currentLongitude = this.state.longitude
     // const auState = this.props.AustralianState
-
     return (
     <View style={styles.container}>
+      <AdMobBanner
+            style={styles.topBanner}
+            bannerSize="smartBannerPortrait"
+            adUnitID={AD_UNIT_ID}
+            // Test ID, Replace with your-admob-unit-id
+            testDeviceID={AD_DEVICE_ID}
+            didFailToReceiveAdWithError={this.bannerError}
+      />
       <View style={styles.welcomeContainer}>
-        {currentLatitude && currentLongitude &&
+        {!!currentLatitude && !!currentLongitude &&
         <MapView
           style={styles.mapStyle}
           initialRegion={{
@@ -276,9 +281,8 @@ class BridgeMapScreen extends React.Component {
           onLayout={this.onMapLayout}
           ref={map => {this.map = map}}
           key={this.props.VehicleHeight}
-        >
-          {this.state.isMapReady && this.props.Bridges.map(marker => (
-            <View>
+        >{this.state.isMapReady && this.props.Bridges.map(marker => (
+            <View key={`${marker[0]}`}>
               {marker[3] <= (this.props.VehicleHeight / 10) &&
               <MapView.Marker
                 key={marker[0]}
@@ -294,7 +298,7 @@ class BridgeMapScreen extends React.Component {
           </View>)}
         </MapView>
         }
-        {this.props.Warnings.mapalertvisible &&
+        {!!this.props.Warnings.mapalertvisible &&
           <TouchableOpacity onPress={() => this.clearWarning()}>
             <Image source={require('../assets/images/warning.png')} style={styles.warningImage}></Image>
             <Text style={styles.warningMessage}>{this.state.mapWarningMessage}</Text>
@@ -307,14 +311,6 @@ class BridgeMapScreen extends React.Component {
           <Image source={require('../assets/images/Assets.xcassets/icon-center.imageset/center-icon-75.png')} style={styles.iconCenterImage}></Image>
         </TouchableOpacity>
       </View>
-      <AdMobBanner
-            style={styles.bottomBanner}
-            bannerSize="smartBannerPortrait"
-            adUnitID={AD_UNIT_ID}
-            // Test ID, Replace with your-admob-unit-id
-            testDeviceID={AD_DEVICE_ID}
-            didFailToReceiveAdWithError={this.bannerError}
-        />
     </View>
     )
   }
@@ -340,9 +336,9 @@ const styles = StyleSheet.create({
   mapStyle: {
     flex: 1,
     width,
-    height: height - 186,
+    height: height - 186 - 48,
     position: 'absolute',
-    top: 0,
+    top: 48,
     left: 0,
     right: 0,
     bottom: 0,
@@ -374,7 +370,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     position: 'absolute',
-    top: height - 192 - 48,
+    top: height - 192,
     left: 32,
     borderRadius: 10
   },
@@ -414,5 +410,9 @@ const styles = StyleSheet.create({
   bottomBanner: {
     position: "absolute",
     bottom: 0
+  },
+  topBanner: {
+    position: "absolute",
+    top: 0
   }
 })

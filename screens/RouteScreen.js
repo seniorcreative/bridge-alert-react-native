@@ -27,7 +27,9 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 // end - moriac somewhere
 // -38.2646152,144.1676303
 
-const PLACES_KEY = 'AIzaSyA2MxBrJqIfIs4DxCh65_bwkxk1Ic0QXRU'
+// const PLACES_KEY = 'AIzaSyA2MxBrJqIfIs4DxCh65_bwkxk1Ic0QXRU'
+// const PLACES_KEY = 'AIzaSyBeJQwEC93rTtWc5p1y7_H481kYyKlSirw'
+const PLACES_KEY = 'AIzaSyD9F3nt6IcRrok2Ewi4ou3WO2oXRVPgjHw' // Android key
 
 import { Button } from 'react-native-elements'
 import Colors from '../constants/Colors'
@@ -36,7 +38,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 // const AD_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111'; // TEST ID
-const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // LIVE ID
+const AD_UNIT_ID = 'ca-app-pub-5368979163797748/1915742789'; // ROUTE SCREEN ID
 const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
 // const AD_DEVICE_ID = 'APP'; // LIVE DEVICE ID
 
@@ -101,7 +103,7 @@ class RouteScreen extends React.Component {
   componentDidMount() {
     AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
     // ALWAYS USE TEST ID for Admob ads
-    AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
+    // AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
     AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
       console.log("interstitialDidLoad")
     );
@@ -131,6 +133,14 @@ class RouteScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <AdMobBanner
+            style={styles.topBanner}
+            bannerSize="smartBannerPortrait"
+            adUnitID={AD_UNIT_ID}
+            // Test ID, Replace with your-admob-unit-id
+            testDeviceID={AD_DEVICE_ID}
+            didFailToReceiveAdWithError={this.bannerError}
+        />
         <View style={styles.welcomeContainer}>
           {/* <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 28, marginTop: 15, marginBottom: 10, fontWeight: 'bold'}}>Route</Text> */}
           <View style={{width: '90%', height: 275, marginTop: 15, marginBottom: 20}}>
@@ -279,14 +289,6 @@ class RouteScreen extends React.Component {
             <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 12 }}>Clear Route</Text>
           </TouchableOpacity>
         </View>
-        <AdMobBanner
-            style={styles.bottomBanner}
-            bannerSize="smartBannerPortrait"
-            adUnitID={AD_UNIT_ID}
-            // Test ID, Replace with your-admob-unit-id
-            testDeviceID={AD_DEVICE_ID}
-            didFailToReceiveAdWithError={this.bannerError}
-        />
       </View>
     )
   }
@@ -322,7 +324,7 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 0,
+    marginTop: 40,
     marginBottom: 20
   },
   image: {
@@ -332,5 +334,9 @@ const styles = StyleSheet.create({
   bottomBanner: {
     position: "absolute",
     bottom: 0
+  },
+  topBanner: {
+    position: "absolute",
+    top: 0
   }
 })
