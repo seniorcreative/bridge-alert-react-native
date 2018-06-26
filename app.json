@@ -10,7 +10,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png",
     "splash": {
-      "image": "./assets/images/Mosaic-ellipse-Logo.png",
+      "image": "./assets/images/Mosaic-ellipse-logo@2x.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffcc00"
     },
