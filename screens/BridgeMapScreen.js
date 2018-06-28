@@ -140,13 +140,15 @@ class BridgeMapScreen extends React.Component {
     // const { state } = this.props.navigation;
     // const currentRouteKey = state.routes[state.index].key;
     // console.log("loc check ", this.props)
-    // console.log(this.props.Bridges, this.props.AustralianState);
+    console.log(this.props.Bridges, this.props.AustralianState);
 
     // if (!!this.props.Coords.length) {
     //   console.log("centerin on first co-ords", this.props.Coords[0])
     //   // this.handleCenter(this.props.Coords[0])
     //   this.map.fitToCoordinates([this.props.Coords[0], this.props.Coords[this.props.Coords.length-1]], { edgePadding: DEFAULT_PADDING, animated: true })
     // }
+
+    if (!this.props.Bridges || !this.props.Bridges.length) return;
 
     // if (!this.props.Bridges[this.props.AustralianState]) return;
     this.props.Bridges.map((marker, index) => {
@@ -317,8 +319,8 @@ class BridgeMapScreen extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // console.log("mapStateToProps on bridge map screen", state, state.Bridges)
-  return {Bridges: state.Bridges,
+  console.log("mapStateToProps on bridge map screen", state, state.Bridges.bridges)
+  return {Bridges: state.Bridges.bridges,
   VehicleHeight: state.VehicleHeight,
   AustralianState: state.AustralianState.austate,
   Coords: state.Coords.coords,

@@ -21,6 +21,7 @@ import {
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import firebase from 'firebase';
 
 import Colors from '../constants/Colors';
 
@@ -69,6 +70,21 @@ class HomeScreen extends React.Component {
     this._onScrollEnd = this._onScrollEnd.bind(this)
     this._onHeightDn = this._onHeightDn.bind(this)
     this._onHeightUp = this._onHeightUp.bind(this)
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        console.log("got anon firebase user, now fetching bridges", uid, isAnonymous, props, props.fetchBridges);
+        props.fetchBridges(uid);
+        // ...
+      } else {
+        // User is signed out.
+        // ...
+      }
+      // ...
+    });
   }
 
   static navigationOptions = {
@@ -77,6 +93,7 @@ class HomeScreen extends React.Component {
   };
 
   componentDidMount() {
+  
     // this.list.getItemLayout = () => {
     // setTimeout(() => {this.setListPage(1)}, 500)
     // }
@@ -270,9 +287,14 @@ const mapStateToProps = state => {
       VehicleHeight: state.VehicleHeight,
       AustralianState: state.AustralianState.austate,
       Coords: state.Coords.coords,
-      Screen: state.Screen
+      Screen: state.Screen,
+      Bridges: state.Bridges
     }
 };
+
+const mapDispatchToProps = (dispatch) => {
+  return { };
+ }
 
 export default connect(mapStateToProps, actions)(HomeScreen);
 
@@ -308,4 +330,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0
   }
-})
+});
+
+

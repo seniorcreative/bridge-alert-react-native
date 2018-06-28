@@ -1,2 +1,5 @@
 node_modules/**/*
 .expo/**/*
+config/dev.js
+config/prod.js
+functions/node_modules/**/*

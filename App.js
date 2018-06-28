@@ -4,8 +4,11 @@ import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
 import { Provider} from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from "redux";
+import reduxThunk from "redux-thunk";
+import * as firebase from 'firebase';
 import reducers from './reducers';
+
 //
 import SharedHeader from './components/SharedHeader';
 
@@ -25,7 +28,7 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <Provider store={createStore(reducers)}>
+        <Provider store={createStore(reducers, {}, applyMiddleware(reduxThunk))}>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
@@ -63,6 +66,13 @@ export default class App extends React.Component {
 
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
+
+    firebase.auth().signInAnonymously().catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
   };
 
 }

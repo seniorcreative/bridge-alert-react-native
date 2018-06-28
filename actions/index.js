@@ -1,3 +1,5 @@
+import { bridgesRef } from "../config/firebase";
+
 export const setVehicleHeight = (vehicleHeight) => {
     return {
         type: "set_vehicle_height",
@@ -52,3 +54,15 @@ export const setMapAlertVisible = (mapalertvisible) => {
         payload: mapalertvisible
     }
 }
+
+// Load in the bridges from firebase db
+export const fetchBridges = () => async dispatch => {
+    console.log("fetching bridges...", bridgesRef);
+    bridgesRef.on("value", snapshot => {
+      console.log("fetched bridges", snapshot);
+      dispatch({
+        type: "fetch_bridges",
+        payload: snapshot.val()
+      });
+    }, (error) => {console.error(error)});
+  };
