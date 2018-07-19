@@ -1,28 +1,20 @@
 import React from 'react';
 import {
   Image,
-  Platform,
-  ScrollView,
   FlatList,
-  SwipeableFlatList,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   Dimensions
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { WebBrowser } from 'expo';
 import {
   AdMobBanner,
-  AdMobInterstitial,
 } from "expo";
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-import firebase from 'firebase';
-
 import Colors from '../constants/Colors';
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
@@ -41,16 +33,16 @@ export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 // const AD_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111'; // TEST ID
 const AD_UNIT_ID = 'ca-app-pub-5368979163797748/1999912385'; // HOME SCREEN ID
-const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
+// const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
 // const AD_DEVICE_ID = 'APP'; // LIVE DEVICE ID
 
 const vehicleImages = [
-  require(`../assets/images/vehicles/vehicle-1.png`),
-  require(`../assets/images/vehicles/vehicle-2.png`),
-  require(`../assets/images/vehicles/vehicle-3.png`),
-  require(`../assets/images/vehicles/vehicle-4.png`),
-  require(`../assets/images/vehicles/vehicle-5.png`),
-  require(`../assets/images/vehicles/vehicle-6.png`),
+  require(`../assets/images/vehicles/ba-vehicle-1.png`),
+  require(`../assets/images/vehicles/ba-vehicle-2.png`),
+  require(`../assets/images/vehicles/ba-vehicle-3.png`),
+  require(`../assets/images/vehicles/ba-vehicle-4.png`),
+  require(`../assets/images/vehicles/ba-vehicle-5.png`),
+  require(`../assets/images/vehicles/ba-vehicle-6.png`),
 ]
 
 class HomeScreen extends React.Component {
@@ -71,20 +63,21 @@ class HomeScreen extends React.Component {
     this._onHeightDn = this._onHeightDn.bind(this)
     this._onHeightUp = this._onHeightUp.bind(this)
 
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        // User is signed in.
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        console.log("got anon firebase user, now fetching bridges", uid, isAnonymous, props, props.fetchBridges);
-        props.fetchBridges(uid);
-        // ...
-      } else {
-        // User is signed out.
-        // ...
-      }
-      // ...
-    });
+    // firebase.auth().onAuthStateChanged(function(user) {
+    //   if (user) {
+    //     // User is signed in.
+    //     var isAnonymous = user.isAnonymous;
+    //     var uid = user.uid;
+    //     console.log("got anon firebase user, now fetching bridges", uid, isAnonymous, props, props.fetchBridges);
+    //     props.fetchBridges(uid);
+    //     // ...
+    //   } else {
+    //     // User is signed out.
+    //     // ...
+    //   }
+    //   // ...
+    // });
+
   }
 
   static navigationOptions = {
@@ -92,33 +85,38 @@ class HomeScreen extends React.Component {
     title: 'Height'
   };
 
+  componentWillMount() {
+    // 
+  }
+
   componentDidMount() {
-  
+    
+    this.props.fetchBridges();
     // this.list.getItemLayout = () => {
     // setTimeout(() => {this.setListPage(1)}, 500)
     // }
-    AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
-    // ALWAYS USE TEST ID for Admob ads
-    // AdMobInterstitial.setAdUnitID(AD_UNIT_ID); // Getting warnings for setting this twice...
-    AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
-      console.log("interstitialDidLoad")
-    );
-    AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
-      console.log("interstitialDidFailToLoad")
-    );
-    AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
-      console.log("interstitialDidOpen")
-    );
-    AdMobInterstitial.addEventListener("interstitialDidClose", () =>
-      console.log("interstitialDidClose")
-    );
-    AdMobInterstitial.addEventListener("interstitialWillLeaveApplication", () =>
-      console.log("interstitialWillLeaveApplication")
-    );
+    // AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
+    // // ALWAYS USE TEST ID for Admob ads
+    // // AdMobInterstitial.setAdUnitID(AD_UNIT_ID); // Getting warnings for setting this twice...
+    // AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
+    //   console.log("interstitialDidLoad")
+    // );
+    // AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
+    //   console.log("interstitialDidFailToLoad")
+    // );
+    // AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
+    //   console.log("interstitialDidOpen")
+    // );
+    // AdMobInterstitial.addEventListener("interstitialDidClose", () =>
+    //   console.log("interstitialDidClose")
+    // );
+    // AdMobInterstitial.addEventListener("interstitialWillLeaveApplication", () =>
+    //   console.log("interstitialWillLeaveApplication")
+    // );
   }
 
   componentWillUnmount() {
-    AdMobInterstitial.removeAllListeners();
+    // AdMobInterstitial.removeAllListeners();
   }
 
   bannerError() {
@@ -174,8 +172,9 @@ class HomeScreen extends React.Component {
                   width: viewportWidth - 40, 
                   height: 120,
                   alignSelf: 'center',
-                  resizeMode: 'contain',
-                  transform: this.state.direction === 'r2l' ? [{scaleX:1}] : [{scaleX:-1}]}} />
+                  resizeMode: 'contain' 
+                  // transform: this.state.direction === 'r2l' ? [{scaleX:1}] : [{scaleX:-1}]
+          }} />
         </View>      
       )
 
@@ -193,7 +192,7 @@ class HomeScreen extends React.Component {
             bannerSize="smartBannerPortrait"
             adUnitID={AD_UNIT_ID}
             // Test ID, Replace with your-admob-unit-id
-            testDeviceID={AD_DEVICE_ID}
+            // testDeviceID={AD_DEVICE_ID}
             didFailToReceiveAdWithError={this.bannerError}
           />
           <View style={styles.welcomeContainer}>
@@ -237,10 +236,15 @@ class HomeScreen extends React.Component {
               <Text style={{fontSize: 20}}>{this.props.VehicleHeight/10.0}{'m'}</Text>
               <Button medium rounded title=" + " onPress={this._onHeightUp} fontSize={28} color={'#000'} backgroundColor={'#fff'}></Button>
             </View>
-            <Button onPress={() => this._startJourney()} medium rounded title="Start" style={{alignSelf: 'center', marginTop: 0, width: '66%'}} color={'#fff'} backgroundColor={'#f00'}></Button>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Routes')}>
-              <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 6 }}>Plan My Route</Text>
-            </TouchableOpacity>
+            <Button onPress={() => this._startJourney()} medium rounded title={!this.props.Bridges || !this.props.Bridges.length ? "Initializing" : "Start"} 
+            style={{alignSelf: 'center', marginTop: 0, width: '66%'}}
+            color={'#fff'} backgroundColor={'#f00'} loading={!this.props.Bridges || !this.props.Bridges.length}></Button>
+            {!!this.props.Bridges && !!this.props.Bridges.length && (
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('Height')}>
+                <Text style={{alignSelf: 'center', color: Colors.Black, fontSize: 14, marginTop: 10 }} disabled={!this.props.Bridges || !this.props.Bridges.length}>Plan My Route</Text>
+              </TouchableOpacity>
+              )
+            }
           </View>
       </View>
     );
@@ -269,26 +273,26 @@ class HomeScreen extends React.Component {
     }
   }
 
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
+  // _handleLearnMorePress = () => {
+  //   WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
+  // };
 
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
+  // _handleHelpPress = () => {
+  //   WebBrowser.openBrowserAsync(
+  //     'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
+  //   );
+  // };
 }
 
 const mapStateToProps = state => {
-    console.log("mapStateToProps on home screen", state, state.AustralianState)
+    // console.log("mapStateToProps on home screen", state, state.AustralianState)
     return {
       Vehicles: state.Vehicles,
       VehicleHeight: state.VehicleHeight,
       AustralianState: state.AustralianState.austate,
       Coords: state.Coords.coords,
       Screen: state.Screen,
-      Bridges: state.Bridges
+      Bridges: state.Bridges.bridges
     }
 };
 

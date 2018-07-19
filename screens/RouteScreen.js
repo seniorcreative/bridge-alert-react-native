@@ -10,7 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Dimensions,
+  Dimensions
 } from 'react-native'
 import {
   AdMobBanner,
@@ -39,7 +39,7 @@ const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 // const AD_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111'; // TEST ID
 const AD_UNIT_ID = 'ca-app-pub-5368979163797748/1915742789'; // ROUTE SCREEN ID
-const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
+// const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
 // const AD_DEVICE_ID = 'APP'; // LIVE DEVICE ID
 
 class RouteScreen extends React.Component {
@@ -51,7 +51,7 @@ class RouteScreen extends React.Component {
       startAddress: '',
       startLocation: {lat: null, lng: null},
       endAddress: '',
-      endLocation: {lat: null, lng: null},
+      endLocation: {lat: null, lng: null}
     }
 
   }
@@ -101,28 +101,29 @@ class RouteScreen extends React.Component {
   }
 
   componentDidMount() {
-    AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
-    // ALWAYS USE TEST ID for Admob ads
-    // AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
-    AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
-      console.log("interstitialDidLoad")
-    );
-    AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
-      console.log("interstitialDidFailToLoad")
-    );
-    AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
-      console.log("interstitialDidOpen")
-    );
-    AdMobInterstitial.addEventListener("interstitialDidClose", () =>
-      console.log("interstitialDidClose")
-    );
-    AdMobInterstitial.addEventListener("interstitialWillLeaveApplication", () =>
-      console.log("interstitialWillLeaveApplication")
-    );
+    // AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
+    // // ALWAYS USE TEST ID for Admob ads
+    // // AdMobInterstitial.setAdUnitID(AD_UNIT_ID);
+    // AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
+    //   console.log("interstitialDidLoad")
+    // );
+    // AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
+    //   console.log("interstitialDidFailToLoad")
+    // );
+    // AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
+    //   console.log("interstitialDidOpen")
+    // );
+    // AdMobInterstitial.addEventListener("interstitialDidClose", () =>
+    //   console.log("interstitialDidClose")
+    // );
+    // AdMobInterstitial.addEventListener("interstitialWillLeaveApplication", () =>
+    //   console.log("interstitialWillLeaveApplication")
+    // );
+
   }
 
   componentWillUnmount() {
-    AdMobInterstitial.removeAllListeners();
+    // AdMobInterstitial.removeAllListeners();
   }
 
   bannerError() {
@@ -138,7 +139,7 @@ class RouteScreen extends React.Component {
             bannerSize="smartBannerPortrait"
             adUnitID={AD_UNIT_ID}
             // Test ID, Replace with your-admob-unit-id
-            testDeviceID={AD_DEVICE_ID}
+            // testDeviceID={AD_DEVICE_ID}
             didFailToReceiveAdWithError={this.bannerError}
         />
         <View style={styles.welcomeContainer}>
@@ -297,7 +298,7 @@ class RouteScreen extends React.Component {
 
 const mapStateToProps = state => {
   // console.log("mapStateToProps on bridge map screen", state, state.Bridges)
-  return {Bridges: state.Bridges,
+  return {Bridges: state.Bridges.bridges,
   VehicleHeight: state.VehicleHeight,
   AustralianState: state.AustralianState.austate,
   Coords: state.Coords.coords,

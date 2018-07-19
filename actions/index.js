@@ -57,9 +57,9 @@ export const setMapAlertVisible = (mapalertvisible) => {
 
 // Load in the bridges from firebase db
 export const fetchBridges = () => async dispatch => {
-    console.log("fetching bridges...", bridgesRef);
+    // console.log("fetching bridges...", bridgesRef);
     bridgesRef.on("value", snapshot => {
-      console.log("fetched bridges", snapshot);
+    //   console.log("fetched bridges", snapshot);
       dispatch({
         type: "fetch_bridges",
         payload: snapshot.val()

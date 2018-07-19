@@ -1,38 +1,38 @@
 [
     {
         "key": 1,
-        "source": "../assets/images/vehicles/vehicle-1.png",
+        "source": "../assets/images/vehicles/ba-vehicle-1.png",
         "title": "Car",
         "height": 25
     },
     {
         "key": 2,
-        "source": "../assets/images/vehicles/vehicle-2.png",
-        "title": "Camper",
+        "source": "../assets/images/vehicles/ba-vehicle-2.png",
+        "title": "Camper / Caravan",
         "height": 30
     },
     {
         "key": 3,
-        "source": "../assets/images/vehicles/vehicle-3.png",
+        "source": "../assets/images/vehicles/ba-vehicle-3.png",
+        "title": "Truck / Van",
+        "height": 33
+    },
+    {
+        "key": 4,
+        "source": "../assets/images/vehicles/ba-vehicle-4.png",
+        "title": "Semi-Trailer / HGV",
+        "height": 43
+    },
+    {
+        "key": 5,
+        "source": "../assets/images/vehicles/ba-vehicle-5.png",
         "title": "Coach",
         "height": 32
     },
     {
-        "key": 4,
-        "source": "../assets/images/vehicles/vehicle-4.png",
-        "title": "Van",
-        "height": 33
-    },
-    {
-        "key": 5,
-        "source": "../assets/images/vehicles/vehicle-5.png",
+        "key": 6,
+        "source": "../assets/images/vehicles/ba-vehicle-6.png",
         "title": "Double-decker",
         "height": 40
-    },
-    {
-        "key": 6,
-        "source": "../assets/images/vehicles/vehicle-6.png",
-        "title": "HGV",
-        "height": 37
     }
 ]

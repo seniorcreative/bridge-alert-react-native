@@ -8,22 +8,18 @@ import Colors from '../constants/Colors';
 import HomeScreen from '../screens/HomeScreen';
 import BridgeMapScreen from '../screens/BridgeMapScreen';
 import RouteScreen from '../screens/RouteScreen';
-// import SettingsScreen from '../screens/SettingsScreen';
 
 export default TabNavigator(
   {
     Height: {
       screen: HomeScreen,
     },
-    BridgeMap: {
-      screen: BridgeMapScreen,
-    },
     Routes: {
       screen: RouteScreen,
+    },
+    BridgeMap: {
+      screen: BridgeMapScreen,
     }
-    // Settings: {
-    //   screen: SettingsScreen,
-    // },
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -37,15 +33,12 @@ export default TabNavigator(
                 ? `ios-car${focused ? '' : '-outline'}`
                 : 'md-car';
             break;
-          case 'BridgeMap':
-            iconName = Platform.OS === 'ios' ? `ios-navigate${focused ? '' : '-outline'}` : 'md-navigate';
+            case 'Routes':
+              iconName = Platform.OS === 'ios' ? `ios-map${focused ? '' : '-outline'}` : 'md-map';
             break;
-          case 'Routes':
-            iconName = Platform.OS === 'ios' ? `ios-map${focused ? '' : '-outline'}` : 'md-map';
+            case 'BridgeMap':
+              iconName = Platform.OS === 'ios' ? `ios-navigate${focused ? '' : '-outline'}` : 'md-navigate';
             break;
-          // case 'Settings':
-          //   iconName =
-          //     Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options';
         }
         return (
           <Ionicons
@@ -57,7 +50,6 @@ export default TabNavigator(
         );
       },
       tabBarOnPress: (e) => {
-        console.log("Tab bar on press", e)
         e.jumpToIndex(e.scene.index)
       }
     }),

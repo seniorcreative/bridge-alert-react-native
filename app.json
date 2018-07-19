@@ -6,7 +6,7 @@
     "privacy": "unlisted",
     "sdkVersion": "28.0.0",
     "platforms": ["ios", "android"],
-    "version": "2.1.0",
+    "version": "2.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png",
     "splash": {
@@ -14,10 +14,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffcc00"
     },
+    "notification": {
+      "icon": "./assets/images/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png",
+      "color": "#ffcc00"
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.seniorcreative.bridgealert",
-      "buildNumber": "3",
+      "buildNumber": "4",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Bridge Alert displays your current location on the Bridge Map and uses it to calculate proximity to Low Clearance Bridges.",
         "NSLocationUsageDescription": "Bridge Alert displays your current location on the Bridge Map and uses it to calculate proximity to Low Clearance Bridges.",
@@ -26,7 +30,7 @@
     },
     "android": {
       "package": "com.seniorcreative.bridgealertandroid",
-      "versionCode": 3,
+      "versionCode": 4,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBkEd9KwR6vUKiZ6Uns9XH8YKbyn0vAwbs"
