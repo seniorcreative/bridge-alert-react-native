@@ -298,11 +298,15 @@ class RouteScreen extends React.Component {
 
 const mapStateToProps = state => {
   // console.log("mapStateToProps on bridge map screen", state, state.Bridges)
-  return {Bridges: state.Bridges.bridges,
-  VehicleHeight: state.VehicleHeight,
-  AustralianState: state.AustralianState.austate,
-  Coords: state.Coords.coords,
-  Screen: state.Screen}
+  return {
+    VehicleHeight: state.VehicleHeight,
+    AustralianState: state.AustralianState.austate,
+    Coords: state.Coords.coords,
+    Screen: state.Screen,
+    Bridges: state.FirebaseData.data.bridges,
+    Content: state.FirebaseData.data.content,
+    Settings: state.FirebaseData.data.settings
+  }
 }
 
 export default connect(mapStateToProps, actions)(RouteScreen);

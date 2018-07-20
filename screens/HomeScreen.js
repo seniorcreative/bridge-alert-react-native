@@ -6,7 +6,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Dimensions
+  Dimensions,
+  Modal,
+  ScrollView
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import {
@@ -56,67 +58,32 @@ class HomeScreen extends React.Component {
       page: 0,
       direction: 'r2l',
       currentItemName: 'Car',
-      currentItemHeight: 'Car'
+      currentItemHeight: 'Car',
+      modalVisible: false,
+      termsAgreed: false
     }
 
     this._onScrollEnd = this._onScrollEnd.bind(this)
     this._onHeightDn = this._onHeightDn.bind(this)
     this._onHeightUp = this._onHeightUp.bind(this)
 
-    // firebase.auth().onAuthStateChanged(function(user) {
-    //   if (user) {
-    //     // User is signed in.
-    //     var isAnonymous = user.isAnonymous;
-    //     var uid = user.uid;
-    //     console.log("got anon firebase user, now fetching bridges", uid, isAnonymous, props, props.fetchBridges);
-    //     props.fetchBridges(uid);
-    //     // ...
-    //   } else {
-    //     // User is signed out.
-    //     // ...
-    //   }
-    //   // ...
-    // });
-
   }
 
   static navigationOptions = {
     header: null,
     title: 'Height'
-  };
+  }
 
-  componentWillMount() {
-    // 
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible})
+  }
+  setTermsAgreed(agreed) {
+    this.setState({termsAgreed: agreed})
   }
 
   componentDidMount() {
-    
-    this.props.fetchBridges();
-    // this.list.getItemLayout = () => {
-    // setTimeout(() => {this.setListPage(1)}, 500)
-    // }
-    // AdMobInterstitial.setTestDeviceID(AD_DEVICE_ID);
-    // // ALWAYS USE TEST ID for Admob ads
-    // // AdMobInterstitial.setAdUnitID(AD_UNIT_ID); // Getting warnings for setting this twice...
-    // AdMobInterstitial.addEventListener("interstitialDidLoad", () =>
-    //   console.log("interstitialDidLoad")
-    // );
-    // AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () =>
-    //   console.log("interstitialDidFailToLoad")
-    // );
-    // AdMobInterstitial.addEventListener("interstitialDidOpen", () =>
-    //   console.log("interstitialDidOpen")
-    // );
-    // AdMobInterstitial.addEventListener("interstitialDidClose", () =>
-    //   console.log("interstitialDidClose")
-    // );
-    // AdMobInterstitial.addEventListener("interstitialWillLeaveApplication", () =>
-    //   console.log("interstitialWillLeaveApplication")
-    // );
-  }
-
-  componentWillUnmount() {
-    // AdMobInterstitial.removeAllListeners();
+    this.setModalVisible(true)
+    this.props.fetchData();
   }
 
   bannerError() {
@@ -195,6 +162,25 @@ class HomeScreen extends React.Component {
             // testDeviceID={AD_DEVICE_ID}
             didFailToReceiveAdWithError={this.bannerError}
           />
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.modalVisible}
+            onRequestClose={() => {
+              alert('Modal has been closed.');
+            }}>
+            <View style={styles.modalViewInner}>
+              <View>
+                <Text style={styles.modalHeading}>Terms of Use</Text>
+                <ScrollView style={styles.modalScrollView}>
+                <Text style={styles.modalPara}>{this.props.Content.termsOfUse}</Text>
+    <Button onPress={() => {this.setModalVisible(!this.state.modalVisible);this.setTermsAgreed(true)}} medium rounded title={!this.props.Bridges || !this.props.Bridges.length ? "Initializing" : "I agree"}  
+                style={{alignSelf: 'center', marginTop: 0, width: '66%'}}
+                color={'#fff'} backgroundColor={'#f00'} loading={!this.props.Bridges || !this.props.Bridges.length}></Button>
+                </ScrollView>
+              </View>
+            </View>
+          </Modal>
           <View style={styles.welcomeContainer}>
             <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 25, marginTop: 10, marginBottom: 0, fontWeight: 'bold'}}>Set Vehicle Height</Text>
             <Text style={{alignSelf: 'center', color: Colors.black, fontSize: 18, marginTop: 5, marginBottom: 0, }}>Swipe for more vehicles</Text>
@@ -272,16 +258,6 @@ class HomeScreen extends React.Component {
       );
     }
   }
-
-  // _handleLearnMorePress = () => {
-  //   WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  // };
-
-  // _handleHelpPress = () => {
-  //   WebBrowser.openBrowserAsync(
-  //     'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-  //   );
-  // };
 }
 
 const mapStateToProps = state => {
@@ -292,7 +268,9 @@ const mapStateToProps = state => {
       AustralianState: state.AustralianState.austate,
       Coords: state.Coords.coords,
       Screen: state.Screen,
-      Bridges: state.Bridges.bridges
+      Bridges: state.FirebaseData.data.bridges,
+      Content: state.FirebaseData.data.content,
+      Settings: state.FirebaseData.data.settings
     }
 };
 
@@ -333,6 +311,27 @@ const styles = StyleSheet.create({
   topBanner: {
     position: "absolute",
     top: 0
+  },
+  modalViewInner: {
+    flex: 1,
+    justifyContent: 'space-around',
+    padding: 20,
+    backgroundColor: '#fc0'
+  },
+  modalHeading: {
+    marginTop: 30,
+    marginBottom: 25,
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  modalPara: {
+    lineHeight: 20,
+    marginBottom: 20
+  },
+  modalScrollView: {
+    flex: 0,
+    height: viewportHeight * 0.67
   }
 });
 

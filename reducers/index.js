@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import BridgeReducer from './BridgeReducer';
+import FirebaseDataReducer from './FirebaseDataReducer';
 import VehicleReducer from './VehicleReducer';
 import VehicleHeightReducer from './VehicleHeightReducer';
 import AustralianStateReducer from './AustralianStateReducer';
@@ -8,7 +8,7 @@ import ScreenReducer from './ScreenReducer';
 import WarningReducer from './WarningReducer';
 
 export default combineReducers({
-    Bridges: BridgeReducer,
+    FirebaseData: FirebaseDataReducer,
     Vehicles: VehicleReducer,
     VehicleHeight: VehicleHeightReducer,
     AustralianState: AustralianStateReducer,

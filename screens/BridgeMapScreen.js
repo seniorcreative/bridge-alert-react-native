@@ -9,28 +9,28 @@ import {
   Modal,
   ScrollView
 } from 'react-native'
-import { Constants, Location, Permissions, Notifications, AdMobBanner, MapView } from 'expo'
+import { Constants, Location, Permissions, Notifications, AdMobBanner, MapView } from 'expo';
 import { Button } from 'react-native-elements';
-import Polyline from '@mapbox/polyline'
-import haversine from 'haversine'
+import Polyline from '@mapbox/polyline';
+import haversine from 'haversine';
 
-import { connect } from 'react-redux'
-import * as actions from '../actions'
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 import Colors from '../constants/Colors'
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
-const width = Dimensions.get('window').width
-const height = Dimensions.get('window').height
-const HEIGHT_BUFFER = 0.3 // 
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
+const HEIGHT_BUFFER = 0.3; // 
 // const AD_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111'; // TEST ID
 const AD_UNIT_ID = 'ca-app-pub-5368979163797748/5946924506'; // MAP SCREEN ID
 // const AD_DEVICE_ID = 'EMULATOR'; // TEST DEVICE ID
 // const AD_DEVICE_ID = 'APP'; // LIVE DEVICE ID
 
 // const BRIDGE_WARNING_DISTANCE = 500
-const DEFAULT_PADDING = { top: 25, right: 25, bottom: 25, left: 25 }
-const MAP_DELTA = 0.25
+const DEFAULT_PADDING = { top: 25, right: 25, bottom: 25, left: 25 };
+const MAP_DELTA = 0.25;
 
 class BridgeMapScreen extends React.Component {
 
@@ -46,9 +46,7 @@ class BridgeMapScreen extends React.Component {
       isMapReady: false,
       mapWarning: false,
       // mapWarningMessage: "Warning 250m to Montague"
-      mapWarningMessage: "",
-      modalVisible: false,
-      termsAgreed: false
+      mapWarningMessage: ""
     }
 
   }
@@ -57,12 +55,6 @@ class BridgeMapScreen extends React.Component {
     header: null,
     title: 'Bridge Map',
   }
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible})
-  }
-  setTermsAgreed(agreed) {
-    this.setState({termsAgreed: agreed})
-  }
 
   componentDidMount() {
 
@@ -70,7 +62,6 @@ class BridgeMapScreen extends React.Component {
     // console.log("location permissions", Permissions.getAsync(Permissions.LOCATION))
     this._alertIfRemoteNotificationsDisabledAsync();
     this._grantLocationPermission();
-    this.setModalVisible(true)
 
 
     // }
@@ -271,25 +262,6 @@ class BridgeMapScreen extends React.Component {
             // testDeviceID={AD_DEVICE_ID}
             didFailToReceiveAdWithError={this.bannerError}
       />
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={this.state.modalVisible}
-        onRequestClose={() => {
-          alert('Modal has been closed.');
-        }}>
-        <View style={styles.modalViewInner}>
-          <View>
-            <Text style={styles.modalHeading}>Terms of Use</Text>
-            <ScrollView style={styles.modalScrollView}>
-            <Text style={styles.modalPara}>Bridge Alert Australia provides this smartphone application on the proviso that it is not used by a driver who is operating a vehicle. You acknowledge that Bridge Alert Australia only provides GPS locations of known Bridges on a map, but in some cases the locations, height and existence of Bridges and other low clearance obstacles are not known and will not be shown on the map. To use the mapping and location alert features of this application you acknowledge that you do not and will not hold Bridge Alert Australia responsible for any accidents of any kind or collisions with obstacles or other vehicles as a result of using this application to a) plan or make a journey or route between two points, b) check for proximity warning alerts when in transit or stationary. Usage of the height measurement feature is only provided as a guide and it is the driver's responsibility to know their vehicle height correctly and put a height which is greater than or equal the maximum height of their vehicle. The user or users of this application understand that the routing functions of this application are to be used a guide to show where Bridges are near potential journey routes, and that it is not a navigation tool with up to date traffic or road information. The user or users of this application understand that any accident or outcome of accidents, injury or damages as a result of using this application is their responsibility and Bridge Alert Australia are not liable.</Text>
-<Button onPress={() => {this.setModalVisible(!this.state.modalVisible);this.setTermsAgreed(true)}} medium rounded title="I Agree" 
-            style={{alignSelf: 'center', marginTop: 0, width: '66%'}}
-            color={'#fff'} backgroundColor={'#f00'} loading={!this.props.Bridges || !this.props.Bridges.length}></Button>
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
       <View style={styles.welcomeContainer}>
         {!!currentLatitude && !!currentLongitude &&
         <MapView
@@ -305,7 +277,7 @@ class BridgeMapScreen extends React.Component {
           onLayout={this.onMapLayout}
           ref={map => {this.map = map}}
           key={this.props.VehicleHeight}
-        >{this.state.isMapReady && this.state.termsAgreed && this.props.Bridges.map(marker => (
+        >{this.state.isMapReady && this.props.Bridges.map(marker => (
             <View key={`${marker[0]}`}>
               {marker[3] <= ((this.props.VehicleHeight / 10) + HEIGHT_BUFFER) &&
               <MapView.Marker
@@ -342,12 +314,16 @@ class BridgeMapScreen extends React.Component {
 
 const mapStateToProps = state => {
   // console.log("mapStateToProps on bridge map screen", state, state.Bridges.bridges)
-  return {Bridges: state.Bridges.bridges,
-  VehicleHeight: state.VehicleHeight,
-  AustralianState: state.AustralianState.austate,
-  Coords: state.Coords.coords,
-  Screen: state.Screen,
-  Warnings: state.Warnings}
+  return {
+    Bridges: state.FirebaseData.data.bridges,
+    Content: state.FirebaseData.data.content,
+    Settings: state.FirebaseData.data.settings,
+    VehicleHeight: state.VehicleHeight,
+    AustralianState: state.AustralianState.austate,
+    Coords: state.Coords.coords,
+    Screen: state.Screen,
+    Warnings: state.Warnings
+  }
 }
 
 export default connect(mapStateToProps, actions)(BridgeMapScreen);
@@ -440,28 +416,5 @@ const styles = StyleSheet.create({
   topBanner: {
     position: "absolute",
     top: 0
-  },
-  modalView: {
-  },
-  modalViewInner: {
-    flex: 1,
-    justifyContent: 'space-around',
-    padding: 20,
-    backgroundColor: '#fc0'
-  },
-  modalHeading: {
-    marginTop: 30,
-    marginBottom: 25,
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  },
-  modalPara: {
-    lineHeight: 20,
-    marginBottom: 20
-  },
-  modalScrollView: {
-    flex: 0,
-    height: viewportHeight * 0.67
   }
 })
